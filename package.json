@@ -1,6 +1,6 @@
 {
   "name": "ayva-cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Ayva CLI",
   "main": "index.js",
   "scripts": {

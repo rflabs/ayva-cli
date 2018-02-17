@@ -3,9 +3,10 @@ rp = require('request-promise'),
 dialogflowIntent = require('./basicIntent.json'),
 dialogflowBaseURI = "https://api.dialogflow.com/v1/intents/",
 ayvaConfigPath = path.join(process.env.PWD, "/ayva.json"),
-ayvaConfig = require(ayvaConfigPath)
+ayvaConfig = {}
 
 var uploadSpeechModelToDialogflow = function(){
+    ayvaConfig = require(ayvaConfigPath)
     var speechModel = require(path.join(process.env.PWD, ayvaConfig.pathToSpeechModel))
     var dialogflowModel ={}
     getDialogflowModel()

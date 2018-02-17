@@ -50,12 +50,25 @@ var nameYourProjectPrompt = {
     // required: true
 }
 
+var choosePlatform = {
+  name: 'platform',
+  message: chalk.rgb(3, 35, 110)("Which voice assistant(s) will you be building off of?"),
+  type: 'list',
+  prefix: "1.",
+  default: 'Google (Dialogflow)',
+  choices: [
+    'Google (Dialogflow)',
+    'Alexa'
+  ]
+}
+
 
 var Prompts = {
     nameYourProjectPrompt: nameYourProjectPrompt,
     chooseYourOwnAdventure: chooseYourOwnAdventure,
     dfClientId: dfClientId,
-    dfDevAccessToken: dfDevAccessToken
+    dfDevAccessToken: dfDevAccessToken,
+    choosePlatform: choosePlatform
 }
 
 module.exports = Prompts;
