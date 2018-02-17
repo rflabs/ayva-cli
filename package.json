@@ -14,7 +14,8 @@
     "enquirer": "^1.0.3",
     "inquirer": "^5.1.0",
     "jsonfile": "^4.0.0",
-    "prompt-checkbox": "^2.2.0"
+    "prompt-checkbox": "^2.2.0",
+    "request-promise": "^4.2.2"
   },
   "bin": {
     "ayva": "./index.js"

@@ -1,0 +1,12 @@
+{
+    "name": "",
+    "contextIn": [],
+    "events": [],
+    "parameters": [],
+    "contextOut": [],
+    "actions": [],
+    "priority": 500000,
+    "fallbackIntent": false,
+    "webhookUsed": true,
+    "webhookForSlotFilling": false
+}
