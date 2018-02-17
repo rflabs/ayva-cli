@@ -57,7 +57,6 @@ var syncIntentWithDialogflow = function(intentConfig, dialogflowModel){
         intent.userSays.push({"data":[{"text": intentConfig.utterances[u]}]})
     }
 
-    dialogflowURI += "?v=20150910"
     var options = {
         method: method,
         uri: dialogflowURI,
@@ -68,8 +67,6 @@ var syncIntentWithDialogflow = function(intentConfig, dialogflowModel){
         json: true
     };
 
-    console.log(intent);
-    
     rp(options)
         .then(function (parsedBody) {
             console.log(parsedBody)

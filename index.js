@@ -2,9 +2,9 @@
 
 var program = require('commander'),
     updateSpeechModels = require("./platforms/dialogflow/uploadSpeechModelToDialogflow"),
-    deleteIntents = require('./platforms/dialogflow/deleteDialogflowIntents')
-    tutorialSetup = require('./tutorialSetup')
-    version = "0.0.1",
+    tutorialSetup = require('./tutorialSetup'),
+    startProxy = require('./startProxy'),
+    version = "0.0.1"
 
 program
     .version(version)
@@ -15,5 +15,10 @@ program
     .version(version)
     .command('deploy')
     .action(updateSpeechModels)
+
+program
+    .version(version)
+    .command('start')
+    .action(startProxy)
 
 program.parse(process.argv)
