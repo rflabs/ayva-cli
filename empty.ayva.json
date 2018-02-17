@@ -1,10 +1,10 @@
 {
     "dialogflow": {
-        "clientID": null,
+        "clientId": null,
         "developerAccessToken": null
     },
     "alexa": {
-        "clientID": null,
+        "clientId": null,
         "developerAccessToken": null
     }
 }
