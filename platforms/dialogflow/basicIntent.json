@@ -5,6 +5,7 @@
     "parameters": [],
     "contextOut": [],
     "actions": [],
+    "userSays": [],
     "priority": 500000,
     "fallbackIntent": false,
     "webhookUsed": true,
