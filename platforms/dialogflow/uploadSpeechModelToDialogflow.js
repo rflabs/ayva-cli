@@ -1,5 +1,5 @@
 var path = require('path'),
-    ayvaConfigPath = path.join(process.env.PWD, "/Personal-Voice-Inbox/ayva.json"),
+    ayvaConfigPath = path.join(process.env.PWD, "/Voice-Inbox/ayva.json"),
     rp = require('request-promise'),
     dialogflowAPIIntent = "https://api.dialogflow.com/v1/intents?v=20150910",
     dialogflowIntent = require('./basicIntent.json');
@@ -26,13 +26,13 @@ var syncIntentWithDialogflow = function(intentConfig){
         json: true
     };
     
-    rp(options)
-        .then(function (parsedBody) {
-            console.log(parsedBody)
-        })
-        .catch(function (err) {
-            console.log(err.error)
-        });
+    // rp(options)
+    //     .then(function (parsedBody) {
+    //         console.log(parsedBody)
+    //     })
+    //     .catch(function (err) {
+    //         console.log(err.error)
+    //     });
 }
 
 module.exports = uploadSpeechModelToDialogflow

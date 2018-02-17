@@ -1,4 +1,4 @@
-var gitCommand = "git clone https://github.com/rflabs/Personal-Voice-Inbox.git",
+var gitCommand = "git clone https://github.com/rflabs/Voice-Inbox.git",
 path = require('path'),
 ayvaConfigPath = path.join(process.env.PWD, "/Voice-Inbox/ayva.json"),
 ayvaConfig = require(path.join(__dirname,'/empty.ayva.json'))
