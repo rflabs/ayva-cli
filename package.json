@@ -12,6 +12,7 @@
     "chalk": "^2.3.1",
     "commander": "^2.14.1",
     "enquirer": "^1.0.3",
+    "inquirer": "^5.1.0",
     "prompt-checkbox": "^2.2.0"
   },
   "bin": {

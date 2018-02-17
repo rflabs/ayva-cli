@@ -5,7 +5,7 @@ var chooseYourOwnAdventure = [
     {
       name: 'platform',
       message: chalk.rgb(3, 35, 110)("Welcome brave traveler! A mean-ol dragon has kidnapped your princess! In this time of great violence, can you choose a less aggressive form of confrontation, and talk the dragon down using reason? Choose your approach:"),
-      type: 'checkbox',
+      type: 'list',
       default: 'Google (Dialogflow)',
       choices: [
         'Google (Dialogflow)',
