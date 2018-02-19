@@ -9,7 +9,7 @@ var program = require('commander'),
 
 program
     .version(version)
-    .command('demo')
+    .command('helloWorld')
     .action(tutorialSetup)
 
 program

@@ -1,25 +1,24 @@
-var path = require('path'),
-rp = require('request-promise'),
-dialogflowIntent = require('./basicIntent.json'),
-dialogflowBaseURI = "https://api.dialogflow.com/v1/intents/",
-ayvaConfigPath = path.join(process.env.PWD, "/ayva.json"),
-ayvaConfig = {}
+var path = require('path')
+var rp = require('request-promise')
+var dialogflowBaseURI = "https://api.dialogflow.com/v1/intents/"
+var ayvaConfigPath = path.join(process.env.PWD, "/ayva.json")
+var getDialogflowBody = require('./basicIntent.js')
 
+var ayvaConfig = {};
 var uploadSpeechModelToDialogflow = function(){
     ayvaConfig = require(ayvaConfigPath)
     var speechModel = require(path.join(process.env.PWD, ayvaConfig.pathToSpeechModel))
     var dialogflowModel ={}
-    getDialogflowModel()
+    getDialogflowModel(ayvaConfig)
         .then(function(res){
             dialogflowModel = res;
-            for (i in speechModel.intents){
-                syncIntentWithDialogflow(speechModel.intents[i], dialogflowModel)
-            }
+            speechModel.intents.map((intentConfig) => {
+                syncIntentWithDialogflow(intentConfig, dialogflowModel)
+            })
         })
-
 }
 
-var getDialogflowModel = function(){
+var getDialogflowModel = function(ayvaConfig){
     return new Promise(function(resolve,reject){
         var options = {
             method: 'GET',
@@ -44,31 +43,32 @@ var getDialogflowModel = function(){
 var syncIntentWithDialogflow = function(intentConfig, dialogflowModel){
     var method = "POST"
     var dialogflowURI = dialogflowBaseURI;
-    var intent = Object.assign({}, dialogflowIntent, {"name": intentConfig.name})
-    intent.responses.push({"action":intentConfig.name})
+    var dialogflowIntent = getDialogflowBody();
+    var intentBody = Object.assign({}, dialogflowIntent, {"name": intentConfig.name})
+    intentBody.responses.push({"action": intentConfig.name})
 
     if(dialogflowModel[intentConfig.name])
     {
-        intent.id = dialogflowModel[intentConfig.name]
+        intentBody.id = dialogflowModel[intentConfig.name]
         method = "PUT"
-        dialogflowURI += intent.id
+        dialogflowURI += intentBody.id
     }
 
     for (var u in intentConfig.utterances){
-        intent.userSays.push({"data":[{"text": intentConfig.utterances[u]}]})
+        intentBody.userSays.push({"data":[{"text": intentConfig.utterances[u]}]})
     }
 
     for (let i in intentConfig.events) {
-        intent.events.push({"name":intentConfig.events[i]})
+        intentBody.events.push({"name":intentConfig.events[i]})
     }
-
+    
     var options = {
         method: method,
         uri: dialogflowURI,
         headers: {
             'Authorization': 'Bearer ' + ayvaConfig.dialogflow.developerAccessToken
         },
-        body: intent,
+        body: intentBody,
         json: true
     };
 
