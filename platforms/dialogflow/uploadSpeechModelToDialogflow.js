@@ -60,7 +60,6 @@ var syncIntentWithDialogflow = function(intentConfig, dialogflowModel){
 
     for (let i in intentConfig.events) {
         intent.events.push({"name":intentConfig.events[i]})
-        console.log(intent.events)
     }
 
     var options = {
