@@ -45,7 +45,7 @@ var syncIntentWithDialogflow = function(intentConfig, dialogflowModel){
     var method = "POST"
     var dialogflowURI = dialogflowBaseURI;
     var intent = Object.assign({}, dialogflowIntent, {"name": intentConfig.name})
-    intent.actions.push(intentConfig.name)
+    intent.responses.push({"action":intentConfig.name})
 
     if(dialogflowModel[intentConfig.name])
     {

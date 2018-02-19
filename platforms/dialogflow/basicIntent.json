@@ -1,10 +1,10 @@
 {
     "name": "",
-    "contextIn": [],
+    "contexts": [],
     "events": [],
     "parameters": [],
     "contextOut": [],
-    "actions": [],
+    "responses": [],
     "userSays": [],
     "priority": 500000,
     "fallbackIntent": false,
