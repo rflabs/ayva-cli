@@ -55,15 +55,10 @@ var syncIntentWithDialogflow = function(intentConfig, dialogflowModel){
     }
 
     for (var u in intentConfig.utterances){
-        let utterance = intentConfig.utterances[u]
-        while(utterance.length > 0) {
-            let slotBegin = utterance.indexOf("{");
-            if (slotBegin === -1) {
-                intentBody.userSays.push({"data":[{"text": utterance}]})
-                break;
-            }
-            
-        }
+        intentBody.userSays.unshift({"data": []})
+        var utterance = intentConfig.utterances[u].replace(/'/g, '"')
+        console.log(utterance)
+        formatUtterance(utterance, intentBody.userSays[0].data)
     }
 
     for (let i in intentConfig.events) {
@@ -80,7 +75,7 @@ var syncIntentWithDialogflow = function(intentConfig, dialogflowModel){
         body: intentBody,
         json: true
     };
-
+    console.log(intentBody)
     rp(options)
         .then(function (parsedBody) {
             console.log(parsedBody)
@@ -88,6 +83,29 @@ var syncIntentWithDialogflow = function(intentConfig, dialogflowModel){
         .catch(function (err) {
             console.log(err.error)
         });
+}
+
+var formatUtterance = function(utterance, requestFormat){
+    console.log("Formatting slots")
+    if(utterance.length == 0) 
+        return;
+
+    let slotBegin = utterance.indexOf("{");
+    if(slotBegin == -1)
+        return requestFormat.push({"text": utterance});
+
+    if(slotBegin != 0){
+        requestFormat.push({"text": utterance.substring(0, slotBegin)});
+    } else {
+        var slotEnd = utterance.indexOf('}');
+        var slot = JSON.parse(utterance.substring(0, slotEnd+1))
+        var slotType = Object.keys(slot)[0]
+        console.log(typeof(slot))
+        requestFormat.push({"alias": slotType, "text": slot[slotType], "userDefined": false, "meta": "@sys.given-name"})
+        slotBegin = slotEnd+1
+    }
+
+    formatUtterance(utterance.substring(slotBegin), requestFormat)
 }
 
 module.exports = uploadSpeechModelToDialogflow
