@@ -58,6 +58,11 @@ var syncIntentWithDialogflow = function(intentConfig, dialogflowModel){
         intent.userSays.push({"data":[{"text": intentConfig.utterances[u]}]})
     }
 
+    for (let i in intentConfig.events) {
+        intent.events.push({"name":intentConfig.events[i]})
+        console.log(intents.events)
+    }
+
     var options = {
         method: method,
         uri: dialogflowURI,
