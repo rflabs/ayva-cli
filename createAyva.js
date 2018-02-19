@@ -13,13 +13,9 @@ var walkthrough = function(req, optional) {
         inquirer.prompt(prompts.choosePlatform).then(function(answer) {
             console.log("\n")
             if (answer.platform === 'Google (Dialogflow)') {
-                var dfClientId, dfDevAccessToken;
-                inquirer.prompt(prompts.dfClientId).then(function(res) {
-                    ayvaConfig.dialogflow["clientId"] = res.dfClientId
-                    inquirer.prompt(prompts.dfDevAccessToken).then(function(res) {
-                        ayvaConfig.dialogflow["developerAccessToken"] = res.dfDevAccessToken;
-                        jsonFile.writeFileSync(ayvaConfigPath, ayvaConfig)
-                    })
+                inquirer.prompt(prompts.dfDevAccessToken).then(function(res) {
+                    ayvaConfig.dialogflow["developerAccessToken"] = res.dfDevAccessToken;
+                    jsonFile.writeFileSync(ayvaConfigPath, ayvaConfig)
                 })
             }
         })
