@@ -55,12 +55,21 @@ var syncIntentWithDialogflow = function(intentConfig, dialogflowModel){
     }
 
     for (var u in intentConfig.utterances){
-        intentBody.userSays.push({"data":[{"text": intentConfig.utterances[u]}]})
+        let utterance = intentConfig.utterances[u]
+        while(utterance.length > 0) {
+            let slotBegin = utterance.indexOf("{");
+            if (slotBegin === -1) {
+                intentBody.userSays.push({"data":[{"text": utterance}]})
+                break;
+            }
+            
+        }
     }
 
     for (let i in intentConfig.events) {
         intentBody.events.push({"name":intentConfig.events[i]})
     }
+
     
     var options = {
         method: method,
