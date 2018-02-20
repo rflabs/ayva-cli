@@ -5,7 +5,7 @@ var logToConsole = function(data){
     console.log(output)
 }
 
-var startProxy = function(port){
+var runAndStartBSTProxy = function(port){
     var app = spawn("npm", [ 'start'])
     var proxy = spawn("bst", ['proxy', 'http', '8080']);
 
@@ -15,4 +15,4 @@ var startProxy = function(port){
     proxy.stderr.on('data',logToConsole)
 }
 
-module.exports = startProxy
+module.exports = runAndStartBSTProxy
