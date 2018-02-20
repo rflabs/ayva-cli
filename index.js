@@ -3,7 +3,7 @@
 var program = require('commander'),
     updateSpeechModels = require("./platforms/dialogflow/uploadSpeechModelToDialogflow"),
     tutorialSetup = require('./tutorialSetup'),
-    startProxy = require('./startProxy'),
+    runAndStartProxy = require('./runAndStartProxy'),
     createAyva = require('./createAyva'),
     version = "0.0.1"
 
@@ -19,8 +19,8 @@ program
 
 program
     .version(version)
-    .command('start')
-    .action(startProxy)
+    .command('run')
+    .action(runAndStartProxy)
 
 program
     .version(version)
