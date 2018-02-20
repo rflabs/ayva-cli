@@ -45,7 +45,7 @@ var syncIntentWithDialogflow = function(intentConfig, dialogflowModel){
     var dialogflowURI = dialogflowBaseURI;
     var dialogflowIntent = getDialogflowBody();
     var intentBody = Object.assign({}, dialogflowIntent, {"name": intentConfig.name})
-    intentBody.responses.push({"action": intentConfig.name})
+    intentBody.responses.unshift({"action": intentConfig.name, "parameters":[]})
 
     if(dialogflowModel[intentConfig.name])
     {
@@ -57,14 +57,18 @@ var syncIntentWithDialogflow = function(intentConfig, dialogflowModel){
     for (var u in intentConfig.utterances){
         intentBody.userSays.unshift({"data": []})
         var utterance = intentConfig.utterances[u].replace(/'/g, '"')
-        console.log(utterance)
-        formatUtterance(utterance, intentBody.userSays[0].data)
+        formatUtterance(utterance, intentBody.userSays[0].data, intentConfig.slots)
     }
 
     for (let i in intentConfig.events) {
         intentBody.events.push({"name":intentConfig.events[i]})
     }
 
+    for (let s in intentConfig.slots) {
+        intentConfig.slots[s].name = s;
+        intentConfig.slots[s].value = "$" + s;
+        intentBody.responses[0].parameters.push(intentConfig.slots[s])
+    }
     
     var options = {
         method: method,
@@ -75,7 +79,7 @@ var syncIntentWithDialogflow = function(intentConfig, dialogflowModel){
         body: intentBody,
         json: true
     };
-    console.log(intentBody)
+    console.log(intentBody.responses[0].parameters)
     rp(options)
         .then(function (parsedBody) {
             console.log(parsedBody)
@@ -85,8 +89,7 @@ var syncIntentWithDialogflow = function(intentConfig, dialogflowModel){
         });
 }
 
-var formatUtterance = function(utterance, requestFormat){
-    console.log("Formatting slots")
+var formatUtterance = function(utterance, requestFormat, slots){
     if(utterance.length == 0) 
         return;
 
@@ -98,14 +101,12 @@ var formatUtterance = function(utterance, requestFormat){
         requestFormat.push({"text": utterance.substring(0, slotBegin)});
     } else {
         var slotEnd = utterance.indexOf('}');
-        var slot = JSON.parse(utterance.substring(0, slotEnd+1))
-        var slotType = Object.keys(slot)[0]
-        console.log(typeof(slot))
-        requestFormat.push({"alias": slotType, "text": slot[slotType], "userDefined": false, "meta": "@sys.given-name"})
+        var slotFromUtterance = JSON.parse(utterance.substring(0, slotEnd+1))
+        var slotName = Object.keys(slotFromUtterance)[0]
+        requestFormat.push({"alias": slotName, "text": slotFromUtterance[slotName], "userDefined": false, "meta": slots[slotName].dataType})
         slotBegin = slotEnd+1
     }
-
-    formatUtterance(utterance.substring(slotBegin), requestFormat)
+    formatUtterance(utterance.substring(slotBegin), requestFormat, slots)
 }
 
 module.exports = uploadSpeechModelToDialogflow
