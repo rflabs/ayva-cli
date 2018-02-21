@@ -5,7 +5,6 @@
         "developerAccessToken": null
     },
     "alexa": {
-        "clientId": null,
-        "developerAccessToken": null
+        "skillId": null
     }
 }

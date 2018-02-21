@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var program = require('commander'),
-    updateSpeechModels = require("./platforms/dialogflow/uploadSpeechModelToDialogflow"),
+    updateSpeechModelDF = require("./platforms/dialogflow/uploadSpeechModel"),
     tutorialSetup = require('./tutorialSetup'),
     runAndStartProxy = require('./runAndStartProxy'),
     createAyva = require('./createAyva'),
@@ -15,7 +15,7 @@ program
 program
     .version(version)
     .command('deploy')
-    .action(updateSpeechModels)
+    .action(updateSpeechModelDF)
 
 program
     .version(version)
