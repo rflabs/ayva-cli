@@ -2,7 +2,7 @@ var alexaModel = function(){
     return {
         "interactionModel":{
             "languageModel": {
-                "invocationName": "try ayva",
+                "invocationName": null,
                 "intents": [
                     {
                         "name": "AMAZON.CancelIntent",
