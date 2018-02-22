@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 var program = require('commander'),
-    updateSpeechModels = require("./platforms/dialogflow/uploadSpeechModelToDialogflow"),
+    updateSpeechModelDF = require("./platforms/dialogflow/uploadSpeechModel"),
+    updateSpeechModelAlexa = require("./platforms/alexa/uploadSpeechModel")
     tutorialSetup = require('./tutorialSetup'),
     runAndStartProxy = require('./runAndStartProxy'),
     createAyva = require('./createAyva'),
@@ -17,7 +18,8 @@ program
 program
     .command('deploy')
     .description('Uploads language models to Dialogflow and Alexa')
-    .action(updateSpeechModels)
+    .action(updateSpeechModelDF)
+
 
 program
     .command('run')
@@ -28,5 +30,10 @@ program
     .command('create')
     .description( 'Create a new ayva voice assitant app')
     .action(createAyva)
+
+program
+    .version(version)
+    .command('test')
+    .action(updateSpeechModelAlexa)
 
 program.parse(process.argv)

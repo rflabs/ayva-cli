@@ -1,6 +1,6 @@
 {
   "name": "ayva-cli",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Ayva CLI",
   "main": "index.js",
   "scripts": {
@@ -11,6 +11,7 @@
   "dependencies": {
     "chalk": "^2.3.1",
     "clear": "0.0.1",
+    "child-process-promise": "^2.2.1",
     "commander": "^2.14.1",
     "enquirer": "^1.0.3",
     "figlet": "^1.2.0",

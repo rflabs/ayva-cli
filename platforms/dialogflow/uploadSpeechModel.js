@@ -1,13 +1,13 @@
 var path = require('path')
 var rp = require('request-promise')
 var dialogflowBaseURI = "https://api.dialogflow.com/v1/intents/"
-var ayvaConfigPath = path.join(process.env.PWD, "/ayva.json")
-var getDialogflowBody = require('./basicIntent.js')
+var ayvaConfigPath = path.join(process.env.PWD || process.cwd(), "/ayva.json")
+var emptyIntentBody = require('./basicIntent.js')
 
 var ayvaConfig = {};
 var uploadSpeechModelToDialogflow = function(){
     ayvaConfig = require(ayvaConfigPath)
-    var speechModel = require(path.join(process.env.PWD, ayvaConfig.pathToSpeechModel))
+    var speechModel = require(path.join(process.env.PWD||process.cwd(), ayvaConfig.pathToSpeechModel))
     var dialogflowModel ={}
     getDialogflowModel(ayvaConfig)
         .then(function(res){
@@ -43,7 +43,7 @@ var getDialogflowModel = function(ayvaConfig){
 var syncIntentWithDialogflow = function(intentConfig, dialogflowModel){
     var method = "POST"
     var dialogflowURI = dialogflowBaseURI;
-    var dialogflowIntent = getDialogflowBody();
+    var dialogflowIntent = emptyIntentBody();
     var intentBody = Object.assign({}, dialogflowIntent, {"name": intentConfig.name})
     intentBody.responses.unshift({"action": intentConfig.name, "parameters":[]})
 
@@ -79,7 +79,6 @@ var syncIntentWithDialogflow = function(intentConfig, dialogflowModel){
         body: intentBody,
         json: true
     };
-    console.log(intentBody.responses[0].parameters)
     rp(options)
         .then(function (parsedBody) {
             console.log(parsedBody)
