@@ -1,113 +1,61 @@
 var path = require('path')
-var rp = require('request-promise')
-var alexaSMAPI = "https://api.amazonalexa.com/v1"
 var ayvaConfigPath = path.join(process.env.PWD, "/ayva.json")
-var emptyIntentBody = require('./basicIntent.js')
+var getAlexaLanguageModel = require('./alexaLanguageModel')
+var askUpdateModel = require('./ask-commands/updateModel')
+var _ = require('lodash')
 
 var ayvaConfig = {};
 
 var uploadSpeechModelToAlexa = function(){
     ayvaConfig = require(ayvaConfigPath)
-    var speechModel = require(path.join(process.env.PWD, ayvaConfig.pathToSpeechModel))
-    var alexaSpeechModel ={}
-    getAlexaModel(ayvaConfig)
-        .then(function(res){
-            alexaSpeechModel = res;
-            speechModel.intents.map((intentConfig) => {
-                syncIntentWithAlexa(intentConfig, alexaSpeechModel)
-            })
-        })
+    console.log(process.env.PWD,ayvaConfig)
+    var ayvaSpeechModel = require(path.join(process.env.PWD, ayvaConfig.pathToSpeechModel))
+    writeAlexaModelToFile(ayvaConfig, ayvaSpeechModel)
+    .then((res) => console.log(res))
+    // .then((res) => {askUpdateModel(intentConfig)})
+    .catch((err) => console.log(`Error writing Alexa speech model: ${err}`))
 }
 
-var getAlexaModel = function(ayvaConfig){
-    return new Promise(function(resolve,reject){
-        var options = {
-            method: 'GET',
-            uri: alexaSMAPI + "/skills/" + ayvaConfig.amazon.skillId + "/stage/development/interactionModel/locales/en-US",
-            headers: {
-                'Authorization': 'Bearer ' + ayvaConfig.alexa.developerAccessToken
-            }
-        };
-    
-        rp(options)
-            .then(function(res){
-                res = JSON.parse(res)
-                var model = {}
-                res.map((intent) => {
-                    model[intent.name] = intent.id
-                })
-                resolve(model);
-            })
-    })
-}
-
-var syncIntentWithAlexa = function(intentConfig, alexaSpeechModel){
-    var method = "POST"
-    var alexaURI = alexaSMAPI;
-    var alexaIntent = emptyIntentBody();
-    var intentBody = Object.assign({}, alexaIntent, {"name": intentConfig.name})
-    intentBody.responses.unshift({"action": intentConfig.name, "parameters":[]})
-
-    if(alexaSpeechModel[intentConfig.name])
-    {
-        intentBody.id = alexaSpeechModel[intentConfig.name]
-        method = "PUT"
-        alexaURI += intentBody.id
-    }
-
-    for (var u in intentConfig.utterances){
-        intentBody.userSays.unshift({"data": []})
-        var utterance = intentConfig.utterances[u].replace(/'/g, '"')
-        formatUtterance(utterance, intentBody.userSays[0].data, intentConfig.slots)
-    }
-
-    for (let i in intentConfig.events) {
-        intentBody.events.push({"name":intentConfig.events[i]})
-    }
-
-    for (let s in intentConfig.slots) {
-        intentConfig.slots[s].name = s;
-        intentConfig.slots[s].value = "$" + s;
-        intentBody.responses[0].parameters.push(intentConfig.slots[s])
-    }
-    
-    var options = {
-        method: method,
-        uri: alexaURI,
-        headers: {
-            'Authorization': 'Bearer ' + ayvaConfig.alexa.developerAccessToken
-        },
-        body: intentBody,
-        json: true
-    };
-    console.log(intentBody.responses[0].parameters)
-    rp(options)
-        .then(function (parsedBody) {
-            console.log(parsedBody)
-        })
-        .catch(function (err) {
-            console.log(err.error)
-        });
-}
-
-var formatUtterance = function(utterance, requestFormat, slots){
-    if(utterance.length == 0) 
-        return;
-
-    let slotBegin = utterance.indexOf("{");
-    if(slotBegin == -1)
-        return requestFormat.push({"text": utterance});
-
+var formatAsSaying = function(unformattedPhrase, formattedPhrase = ""){
+    let slotBegin = unformattedPhrase.indexOf("{");
+    if(slotBegin == -1 || unformattedPhrase.length ==0)
+        return formattedPhrase + unformattedPhrase
+   
     if(slotBegin != 0){
-        requestFormat.push({"text": utterance.substring(0, slotBegin)});
+        formattedPhrase += unformattedPhrase.substring(0,slotBegin);
+        formatAsSaying(unformattedPhrase.substring)
     } else {
         var slotEnd = utterance.indexOf('}');
         var slotFromUtterance = JSON.parse(utterance.substring(0, slotEnd+1))
         var slotName = Object.keys(slotFromUtterance)[0]
-        requestFormat.push({"alias": slotName, "text": slotFromUtterance[slotName], "userDefined": false, "meta": slots[slotName].dataType})
-        slotBegin = slotEnd+1
+        formattedPhrase += `{${slotName}}`
+        formatAsSaying(unformattedPhrase.substring(slotEnd+1), formattedPhrase)
     }
-    formatUtterance(utterance.substring(slotBegin), requestFormat, slots)
+}
+
+var writeAlexaModelToFile = function(ayvaConfig, ayvaSpeechModel){
+    return new Promise((resolve, reject) => {
+        var alm = getAlexaLanguageModel()
+        alm.languageModel.invocationName = ayvaConfig.invocationName;
+        ayvaSpeechModel.intents.map((intent) => {
+            var alexaFormattedIntent = {"name": intent.name, "slots":[], "samples": []}
+            addSlotsToModel(intent.slots, alexaFormattedIntent)
+            addSayingsToModel(intent.utterances, alexaFormattedIntent)
+
+        })
+    })
+}
+
+var addSlotsToModel = function(slots, alexaFormattedIntent){
+    slots.map((slot) => {
+        alexaFormattedIntent.slots.push({"name":slot.name,"type":slot.dataType_alexa})
+    })
+}
+
+var addSayingsToModel = function(phrases, alexaFormattedIntent){
+    phrases.map((phrase) => {
+        alexaFormattedIntent.samples.push(formatAsSaying(phrase))
+    })
 }
 
 module.exports = uploadSpeechModelToAlexa

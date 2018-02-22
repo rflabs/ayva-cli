@@ -2,6 +2,7 @@
 
 var program = require('commander'),
     updateSpeechModelDF = require("./platforms/dialogflow/uploadSpeechModel"),
+    updateSpeechModelAlexa = require("./platforms/alexa/uploadSpeechModel")
     tutorialSetup = require('./tutorialSetup'),
     runAndStartProxy = require('./runAndStartProxy'),
     createAyva = require('./createAyva'),
@@ -26,5 +27,10 @@ program
     .version(version)
     .command('create')
     .action(createAyva)
+
+program
+    .version(version)
+    .command('test')
+    .action(updateSpeechModelAlexa)
 
 program.parse(process.argv)

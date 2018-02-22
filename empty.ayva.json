@@ -1,4 +1,5 @@
 {
+    "invocationName": null,
     "pathToSpeechModel": "./speechModel.js",
     "dialogflow": {
         "clientId": null,
