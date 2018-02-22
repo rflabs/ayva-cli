@@ -1,5 +1,5 @@
 var path = require('path')
-console.log(process.env.PWD)
+console.log(process.cwd())
 var ayvaConfigPath = path.join(process.env.PWD || process.cwd(), "/ayva.json")
 var getAlexaLanguageModel = require('./alexaLanguageModel')
 var askUpdateModel = require('./ask-commands/updateModel')
@@ -9,8 +9,7 @@ var ayvaConfig = {};
 
 var uploadSpeechModelToAlexa = function(){
     ayvaConfig = require(ayvaConfigPath)
-    console.log(process.env.PWD,ayvaConfig)
-    var ayvaSpeechModel = require(path.join(process.env.PWD, ayvaConfig.pathToSpeechModel))
+    var ayvaSpeechModel = require(path.join(process.env.PWD||process.cwd(), ayvaConfig.pathToSpeechModel))
     writeAlexaModelToFile(ayvaConfig, ayvaSpeechModel)
         .then((res) => console.log(res))
         // .then((res) => {askUpdateModel(intentConfig)})
@@ -38,7 +37,9 @@ var writeAlexaModelToFile = function(ayvaConfig, ayvaSpeechModel){
     return new Promise((resolve, reject) => {
         var alm = getAlexaLanguageModel()
         alm.languageModel.invocationName = ayvaConfig.invocationName;
+        console.log(ayvaSpeechModel)
         ayvaSpeechModel.intents.map((intent) => {
+            console.log(intent)
             var alexaFormattedIntent = {"name": intent.name, "slots":[], "samples": []}
             addSlotsToModel(intent.slots, alexaFormattedIntent)
             addSayingsToModel(intent.utterances, alexaFormattedIntent)
@@ -48,6 +49,8 @@ var writeAlexaModelToFile = function(ayvaConfig, ayvaSpeechModel){
 }
 
 var addSlotsToModel = function(slots, alexaFormattedIntent){
+    console.log(slots)
+    if(!slots) return;
     slots.map((slot) => {
         alexaFormattedIntent.slots.push({"name":slot.name,"type":slot.dataType_alexa})
     })

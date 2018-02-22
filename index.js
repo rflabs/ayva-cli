@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var program = require('commander'),
-    // updateSpeechModelDF = require("./platforms/dialogflow/uploadSpeechModel"),
+    updateSpeechModelDF = require("./platforms/dialogflow/uploadSpeechModel"),
     updateSpeechModelAlexa = require("./platforms/alexa/uploadSpeechModel")
     tutorialSetup = require('./tutorialSetup'),
     runAndStartProxy = require('./runAndStartProxy'),

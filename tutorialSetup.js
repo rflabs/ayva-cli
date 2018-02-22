@@ -1,6 +1,6 @@
 var gitCommand = "git clone https://github.com/rflabs/ayva-helloWorld.git",
 path = require('path'),
-ayvaConfigPath = path.join(process.env.PWD, "/ayva-helloWorld/ayva.json"),
+ayvaConfigPath = path.join(process.env.PWD || process.cwd(), "/ayva-helloWorld/ayva.json"),
 ayvaConfig = require(path.join(__dirname,'/empty.ayva.json'))
 jsonFile = require('jsonfile'),
 exec = require('child_process').exec,

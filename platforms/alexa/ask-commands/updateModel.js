@@ -10,10 +10,7 @@ var exec = require('child-process-promise').exec;
 
                     */
 var updateModel = function(alexaConfig){
-    var commandText = `ask api update-model ${alexaConfig.skillId} -f ${alexaConfig.file} \
-        -l 'en-US' \
-        -g development \
-        --debug";
+    var commandText = `ask api update-model ${alexaConfig.skillId} -f ${alexaConfig.file} -l 'en-US' -g development --debug`;
         //profile -p
     
     exec(commandText)

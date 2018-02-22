@@ -7,7 +7,7 @@ var emptyIntentBody = require('./basicIntent.js')
 var ayvaConfig = {};
 var uploadSpeechModelToDialogflow = function(){
     ayvaConfig = require(ayvaConfigPath)
-    var speechModel = require(path.join(process.env.PWD, ayvaConfig.pathToSpeechModel))
+    var speechModel = require(path.join(process.env.PWD||process.cwd(), ayvaConfig.pathToSpeechModel))
     var dialogflowModel ={}
     getDialogflowModel(ayvaConfig)
         .then(function(res){
