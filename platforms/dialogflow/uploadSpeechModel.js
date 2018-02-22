@@ -1,7 +1,7 @@
 var path = require('path')
 var rp = require('request-promise')
 var dialogflowBaseURI = "https://api.dialogflow.com/v1/intents/"
-var ayvaConfigPath = path.join(process.env.PWD, "/ayva.json")
+var ayvaConfigPath = path.join(process.env.PWD || process.cwd(), "/ayva.json")
 var emptyIntentBody = require('./basicIntent.js')
 
 var ayvaConfig = {};

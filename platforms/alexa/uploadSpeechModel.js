@@ -1,5 +1,6 @@
 var path = require('path')
-var ayvaConfigPath = path.join(process.env.PWD, "/ayva.json")
+console.log(process.env.PWD)
+var ayvaConfigPath = path.join(process.env.PWD || process.cwd(), "/ayva.json")
 var getAlexaLanguageModel = require('./alexaLanguageModel')
 var askUpdateModel = require('./ask-commands/updateModel')
 var _ = require('lodash')
@@ -11,9 +12,9 @@ var uploadSpeechModelToAlexa = function(){
     console.log(process.env.PWD,ayvaConfig)
     var ayvaSpeechModel = require(path.join(process.env.PWD, ayvaConfig.pathToSpeechModel))
     writeAlexaModelToFile(ayvaConfig, ayvaSpeechModel)
-    .then((res) => console.log(res))
-    // .then((res) => {askUpdateModel(intentConfig)})
-    .catch((err) => console.log(`Error writing Alexa speech model: ${err}`))
+        .then((res) => console.log(res))
+        // .then((res) => {askUpdateModel(intentConfig)})
+        .catch((err) => console.log(`Error writing Alexa speech model: ${err}`))
 }
 
 var formatAsSaying = function(unformattedPhrase, formattedPhrase = ""){
