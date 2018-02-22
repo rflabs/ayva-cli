@@ -1,7 +1,7 @@
 var fs = require('fs')
 var exec = require('child-process-promise').exec;
 
-                    /* $ ask api update-model
+                    /*  ask api update-model
                         [-s|--skill-id <skillId>]
                         [-f | --file <fileName>]
                         [-l|--locale <locale>]
