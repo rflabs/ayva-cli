@@ -15,15 +15,18 @@ program
     .action(tutorialSetup)
 
 program
-    .command('deploy', "Uploads language models to Dialogflow and Alexa")
+    .command('deploy')
+    .description('Uploads language models to Dialogflow and Alexa')
     .action(updateSpeechModels)
 
 program
-    .command('run', "Starts local webhook proxy for use in AI platforms")
+    .command('run')
+    .description('Starts local webhook proxy for use in AI platforms')
     .action(runAndStartProxy)
 
 program
-    .command('create', "Create a new ayva voice assitant app")
+    .command('create')
+    .description( 'Create a new ayva voice assitant app')
     .action(createAyva)
 
 program.parse(process.argv)
