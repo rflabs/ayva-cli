@@ -17,17 +17,19 @@ var uploadSpeechModelToAlexa = function(){
 }
 
 var formatAsSaying = function(unformattedPhrase, formattedPhrase = ""){
+    console.log(unformattedPhrase,formattedPhrase);
     let slotBegin = unformattedPhrase.indexOf("{");
     if(slotBegin == -1 || unformattedPhrase.length ==0)
         return formattedPhrase + unformattedPhrase
    
     if(slotBegin != 0){
         formattedPhrase += unformattedPhrase.substring(0,slotBegin);
-        formatAsSaying(unformattedPhrase.substring)
+        formatAsSaying(unformattedPhrase.substring(slotBegin))
     } else {
-        var slotEnd = utterance.indexOf('}');
-        var slotFromUtterance = JSON.parse(utterance.substring(0, slotEnd+1))
+        var slotEnd = unformattedPhrase.indexOf('}');
+        var slotFromUtterance = JSON.parse(unformattedPhrase.substring(0, slotEnd+1))
         var slotName = Object.keys(slotFromUtterance)[0]
+        console.log(slotName)
         formattedPhrase += `{${slotName}}`
         formatAsSaying(unformattedPhrase.substring(slotEnd+1), formattedPhrase)
     }
@@ -39,7 +41,6 @@ var writeAlexaModelToFile = function(ayvaConfig, ayvaSpeechModel){
         alm.languageModel.invocationName = ayvaConfig.invocationName;
         console.log(ayvaSpeechModel)
         ayvaSpeechModel.intents.map((intent) => {
-            console.log(intent)
             var alexaFormattedIntent = {"name": intent.name, "slots":[], "samples": []}
             addSlotsToModel(intent.slots, alexaFormattedIntent)
             addSayingsToModel(intent.utterances, alexaFormattedIntent)
@@ -49,10 +50,11 @@ var writeAlexaModelToFile = function(ayvaConfig, ayvaSpeechModel){
 }
 
 var addSlotsToModel = function(slots, alexaFormattedIntent){
-    console.log(slots)
     if(!slots) return;
-    slots.map((slot) => {
-        alexaFormattedIntent.slots.push({"name":slot.name,"type":slot.dataType_alexa})
+
+    Object.keys(slots).map((slotName) => {
+        console.log(slotName)
+        alexaFormattedIntent.slots.push({"name":slotName,"type":slots[slotName].dataType_alexa})
     })
 }
 
