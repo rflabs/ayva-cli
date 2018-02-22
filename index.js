@@ -9,22 +9,21 @@ var program = require('commander'),
 
 program
     .version(version)
+
+program
     .command('helloWorld')
     .action(tutorialSetup)
 
 program
-    .version(version)
-    .command('deploy')
+    .command('deploy', "Uploads language models to Dialogflow and Alexa")
     .action(updateSpeechModels)
 
 program
-    .version(version)
-    .command('run')
+    .command('run', "Starts local webhook proxy for use in AI platforms")
     .action(runAndStartProxy)
 
 program
-    .version(version)
-    .command('create')
+    .command('create', "Create a new ayva voice assitant app")
     .action(createAyva)
 
 program.parse(process.argv)
