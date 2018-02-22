@@ -79,7 +79,6 @@ var syncIntentWithDialogflow = function(intentConfig, dialogflowModel){
         body: intentBody,
         json: true
     };
-    console.log(intentBody.responses[0].parameters)
     rp(options)
         .then(function (parsedBody) {
             console.log(parsedBody)

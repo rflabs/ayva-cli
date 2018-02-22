@@ -1,26 +1,26 @@
-
 var alexaModel = function(){
     return {
-        "languageModel": {
-            "invocationName": "try ayva",
-            "intents": [
-                {
-                    "name": "AMAZON.CancelIntent",
-                    "slots": [],
-                    "samples": []
-                },
-                {
-                    "name": "AMAZON.HelpIntent",
-                    "slots": [],
-                    "samples": []
-                },
-                {
-                    "name": "AMAZON.StopIntent",
-                    "slots": [],
-                    "samples": []
-                }
-            ],
-            "types": []
+        "interactionModel":{
+            "languageModel": {
+                "invocationName": "try ayva",
+                "intents": [
+                    {
+                        "name": "AMAZON.CancelIntent",
+                        "slots": [],
+                        "samples": []
+                    },
+                    {
+                        "name": "AMAZON.HelpIntent",
+                        "slots": [],
+                        "samples": []
+                    },
+                    {
+                        "name": "AMAZON.StopIntent",
+                        "slots": [],
+                        "samples": []
+                    }
+                ]
+            }
         }
     }
 }

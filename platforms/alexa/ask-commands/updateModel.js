@@ -1,3 +1,4 @@
+var fs = require('fs')
 var exec = require('child-process-promise').exec;
 
                     /* $ ask api update-model
@@ -9,13 +10,22 @@ var exec = require('child-process-promise').exec;
                         [--debug]
 
                     */
-var updateModel = function(alexaConfig){
-    var commandText = `ask api update-model ${alexaConfig.skillId} -f ${alexaConfig.file} -l 'en-US' -g development --debug`;
+var updateModel = function(ayvaConfig){
+    console.log(ayvaConfig)
+    var commandText = `ask api update-model -s ${ayvaConfig.alexa.skillId} -f ./en-US.json -l en-US`;
         //profile -p
-    
     exec(commandText)
-        .then(() => { return parseResponse() } )
-        .catch((err) => { return parseResponse(err) } )    
+        .then((data) =>  { 
+            if(data.stderr) 
+                console.log(data.stderr) 
+            else {
+                fs.unlink('./en-US.json', function(data,err){
+                    if(!err)
+                        console.log("Successful deploy to Alexa")
+                })
+            }
+        })
+        .catch((err) => { console.log(err.stderr);  } )  
 }
 
 module.exports = updateModel;
