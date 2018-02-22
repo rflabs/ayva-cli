@@ -32,7 +32,7 @@ var dfDevAccessToken = {
   name: 'dfDevAccessToken',
   message: chalk.rgb(3, 35, 110)("Please enter your Dialogflow Developer Access Token:"),
   type: 'input',
-  prefix: "3.",
+  prefix: "2.",
   validate: function(value) {
     if (value.length) {
       return true;
@@ -53,7 +53,7 @@ var nameYourProjectPrompt = {
 var choosePlatform = {
   name: 'platform',
   message: chalk.rgb(3, 35, 110)("Which voice assistant(s) will you be building off of?"),
-  type: 'list',
+  type: 'checkbox',
   prefix: "1.",
   default: 'Google (Dialogflow)',
   choices: [
