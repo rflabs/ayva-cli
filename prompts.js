@@ -76,6 +76,20 @@ var alexaSkillId = {
   }
 }
 
+var invocationPhrase = {
+  name: 'invocationPhrase',
+  message: chalk.rgb(3, 35, 110)("Please enter your preferred invocation phrase for Alexa: "),
+  type: 'input',
+  prefix: '-',
+  validate: function(value) {
+    if (value.length) {
+      return true;
+    } else {
+      return chalk.red("Please enter your preferred invocation phrase for Alexa (Having trouble finding this? Visit <url> for help): ")
+    }
+  }
+}
+
 
 var Prompts = {
     nameYourProjectPrompt: nameYourProjectPrompt,
@@ -83,7 +97,8 @@ var Prompts = {
     dfClientId: dfClientId,
     dfDevAccessToken: dfDevAccessToken,
     choosePlatform: choosePlatform,
-    alexaSkillId: alexaSkillId
+    alexaSkillId: alexaSkillId,
+    invocationPhrase: invocationPhrase
 }
 
 module.exports = Prompts;

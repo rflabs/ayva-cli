@@ -27,9 +27,13 @@ var alexaSelection = function() {
     return new Promise(function(resolve, reject) {
         inquirer.prompt(prompts.alexaSkillId).then(function(res) {
             ayvaConfig.alexa["skillId"] = res.alexaSkillId;
-            jsonFile.writeFileSync(ayvaConfigPath, ayvaConfig)
             console.log("\n")
-            resolve()
+            inquirer.prompt(prompts.invocationPhrase).then(function(res) {
+                ayvaConfig.invocationPhrase = res.invocationPhrase
+                jsonFile.writeFileSync(ayvaConfigPath, ayvaConfig)
+                console.log("\n")
+                resolve()
+            })
         })
     })
 }
