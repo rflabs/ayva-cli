@@ -27,7 +27,6 @@ var alexaSelection = function() {
     return new Promise(function(resolve, reject) {
         inquirer.prompt(prompts.alexaSkillId).then(function(res) {
             ayvaConfig.alexa["skillId"] = res.alexaSkillId;
-            console.log("\n")
             inquirer.prompt(prompts.invocationPhrase).then(function(res) {
                 ayvaConfig.invocationPhrase = res.invocationPhrase
                 jsonFile.writeFileSync(ayvaConfigPath, ayvaConfig)
