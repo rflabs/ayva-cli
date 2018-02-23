@@ -5,7 +5,7 @@ var chooseYourOwnAdventure = {
   name: 'platform',
   message: chalk.rgb(3, 35, 110)("Welcome brave traveler! A mean-ol dragon has kidnapped your princess! In this time of great violence, can you choose a less aggressive form of confrontation, and talk the dragon down using reason? Choose your approach:"),
   type: 'list',
-  prefix: "1.",
+  prefix: "-",
   default: 'Google (Dialogflow)',
   choices: [
     'Google (Dialogflow)',
@@ -18,7 +18,7 @@ var dfClientId = {
   name:'dfClientId',
   message: chalk.rgb(3, 35, 110)("Please enter your Dialogflow client id:"),
   type: 'input',
-  prefix: "2.",
+  prefix: "-",
   validate: function(value) {
     if (value.length) {
       return true;
@@ -32,7 +32,7 @@ var dfDevAccessToken = {
   name: 'dfDevAccessToken',
   message: chalk.rgb(3, 35, 110)("Please enter your Dialogflow Developer Access Token: "),
   type: 'input',
-  prefix: "2.",
+  prefix: "-",
   validate: function(value) {
     if (value.length) {
       return true;
@@ -52,9 +52,9 @@ var nameYourProjectPrompt = {
 
 var choosePlatform = {
   name: 'platform',
-  message: chalk.rgb(3, 35, 110)("Which voice assistant(s) will you be building off of?"),
+  message: chalk.rgb(3, 35, 110)("Which voice assistant(s) will you be building for?"),
   type: 'checkbox',
-  prefix: "1.",
+  prefix: "-",
   default: 'Google (Dialogflow)',
   choices: [
     'Google (Dialogflow)',
@@ -66,7 +66,7 @@ var alexaSkillId = {
   name: 'alexaSkillId',
   message: chalk.rgb(3, 35, 110)("Please enter your Alexa Skills ID: "),
   type: 'input',
-  prefix: '2.',
+  prefix: '-',
   validate: function(value) {
     if (value.length) {
       return true;
