@@ -20,7 +20,6 @@ program
     .description('Uploads language models to Dialogflow and Alexa')
     .action(updateSpeechModelDF)
 
-
 program
     .command('run')
     .description('Starts local webhook proxy for use in AI platforms')
@@ -32,7 +31,6 @@ program
     .action(createAyva)
 
 program
-    .version(version)
     .command('test')
     .action(updateSpeechModelAlexa)
 

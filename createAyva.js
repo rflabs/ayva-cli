@@ -12,9 +12,30 @@ var clear = require('clear')
 var figlet = require('figlet');
 var chalk = require('chalk')
 
+var dialogflowSelection = function() {
+    return new Promise(function(resolve, reject) {
+        inquirer.prompt(prompts.dfDevAccessToken).then(function(res) {
+            ayvaConfig.dialogflow["developerAccessToken"] = res.dfDevAccessToken;
+            jsonFile.writeFileSync(ayvaConfigPath, ayvaConfig)
+            console.log("\n")
+            resolve()
+        })
+    })
+}
+
+var alexaSelection = function() {
+    return new Promise(function(resolve, reject) {
+        inquirer.prompt(prompts.alexaSkillId).then(function(res) {
+            ayvaConfig.alexa["skillId"] = res.alexaSkillId;
+            jsonFile.writeFileSync(ayvaConfigPath, ayvaConfig)
+            console.log("\n")
+            resolve()
+        })
+    })
+}
+
 var walkthrough = function(req, optional) {
     clear();
-
     figlet.text('Ayva', {
         font: 'Graffiti',
         horizontalLayout: 'full',
@@ -30,23 +51,20 @@ var walkthrough = function(req, optional) {
         exec(gitCommand, "", function(err, data){
             inquirer.prompt(prompts.choosePlatform).then(function(answer) {
                 console.log("\n")
-                for (let i in answer.platform) {
-                    if (answer.platform[i] === 'Google (Dialogflow)') {
-                        inquirer.prompt(prompts.dfDevAccessToken).then(function(res) {
-                            ayvaConfig.dialogflow["developerAccessToken"] = res.dfDevAccessToken;
-                            jsonFile.writeFileSync(ayvaConfigPath, ayvaConfig)
-                            console.log("\n")
-                        })
-                    }
+                if (answer.platform[0] === 'Google (Dialogflow)' && answer.platform.length === 1) {
+                    dialogflowSelection()
                 }
-                
+                if (answer.platform[0] === 'Alexa' && answer.platform.length === 1) {
+                    alexaSelection()
+                }
+                if (answer.platform.length > 1) {
+                    dialogflowSelection().then(function() {
+                        alexaSelection()
+                    })
+                }
             })
-        });
-        
-    });
-
-
-    
+        })
+    })
 }
 
 module.exports = walkthrough;
