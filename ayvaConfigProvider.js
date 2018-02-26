@@ -18,7 +18,6 @@ var ayvaConfigProvider = function(){
         }
     }catch (e) {
         console.log("This does not appear to be an Ayva project. Run ayva init to initialize");
-        // console.log(e)
         return null;
     }
 }()
