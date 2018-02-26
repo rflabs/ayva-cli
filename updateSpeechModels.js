@@ -21,7 +21,10 @@ var updateByFlags = function(cmd){
 }
 
 var updateByConfig = function(cmd){
-
+    if(Ayva.hasAlexaConfiguration())
+        updateSpeechModelAlexa()
+    if(Ayva.hasDialogflowConfiguration())
+        updateSpeechModelDF()
 }
 
 module.exports = updateSpeechModels;
