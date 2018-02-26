@@ -1,12 +1,11 @@
 #!/usr/bin/env node
 
 var program = require('commander'),
-    updateSpeechModelDF = require("./platforms/dialogflow/uploadSpeechModel"),
-    updateSpeechModelAlexa = require("./platforms/alexa/uploadSpeechModel")
-    tutorialSetup = require('./tutorialSetup'),
-    runAndStartProxy = require('./runAndStartProxy'),
-    createAyva = require('./createAyva'),
-    version = "0.0.1"
+tutorialSetup = require('./tutorialSetup'),
+runAndStartProxy = require('./runAndStartProxy'),
+createAyva = require('./createAyva'),
+updateSpeechModels = require('./updateSpeechModels'),
+version = "0.0.1"
 
 program
     .version(version)
@@ -17,8 +16,10 @@ program
 
 program
     .command('deploy')
-    .description('Uploads language models to Dialogflow and Alexa')
-    .action(updateSpeechModelDF)
+    .option('-d, --dialogflow', 'Update Dialogflow V1 from Ayva Speech Model')
+    .option('-a, --alexa', 'Update Alexa from Ayva Speech Model')
+    .description('Uploads language models to Dialogflow and Alexa according to project\'s ayva.json configuration')
+    .action(updateSpeechModels)
 
 program
     .command('run')
@@ -29,9 +30,5 @@ program
     .command('create')
     .description( 'Create a new ayva voice assitant app')
     .action(createAyva)
-
-program
-    .command('test')
-    .action(updateSpeechModelAlexa)
 
 program.parse(process.argv)

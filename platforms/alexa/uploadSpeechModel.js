@@ -1,17 +1,14 @@
 var path = require('path')
-var ayvaConfigPath = path.join(process.env.PWD || process.cwd(), "/ayva.json")
 var getAlexaLanguageModel = require('./alexaLanguageModel')
 var askUpdateModel = require('./ask-commands/updateModel')
 var jsonFile = require('jsonfile')
 var _ = require('lodash')
 
-var ayvaConfig = {};
+var Ayva = require('../../ayvaConfigProvider')
 
 var uploadSpeechModelToAlexa = function(){
-    ayvaConfig = require(ayvaConfigPath)
-    var ayvaSpeechModel = require(path.join(process.env.PWD||process.cwd(), ayvaConfig.pathToSpeechModel))
-    writeAlexaModelToFile(ayvaConfig, ayvaSpeechModel)
-        .then((res) => askUpdateModel(ayvaConfig))
+    writeAlexaModelToFile(Ayva.config, Ayva.speechModel)
+        .then((res) => askUpdateModel())
         .catch((err) => console.log(`Error writing Alexa speech model: ${err}`))
 }
 

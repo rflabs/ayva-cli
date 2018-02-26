@@ -1,18 +1,16 @@
 var path = require('path')
 var rp = require('request-promise')
 var dialogflowBaseURI = "https://api.dialogflow.com/v1/intents/"
-var ayvaConfigPath = path.join(process.env.PWD || process.cwd(), "/ayva.json")
 var emptyIntentBody = require('./basicIntent.js')
 
-var ayvaConfig = {};
+var Ayva = require('../../ayvaConfigProvider')
+
 var uploadSpeechModelToDialogflow = function(){
-    ayvaConfig = require(ayvaConfigPath)
-    var speechModel = require(path.join(process.env.PWD||process.cwd(), ayvaConfig.pathToSpeechModel))
-    var dialogflowModel ={}
-    getDialogflowModel(ayvaConfig)
-        .then(function(res){
-            dialogflowModel = res;
-            speechModel.intents.map((intentConfig) => {
+    if(!Ayva) return; 
+
+    getDialogflowModel(Ayva.config)
+        .then(function(dialogflowModel){
+            Ayva.speechModel.intents.map((intentConfig) => {
                 syncIntentWithDialogflow(intentConfig, dialogflowModel)
             })
         })
@@ -74,7 +72,7 @@ var syncIntentWithDialogflow = function(intentConfig, dialogflowModel){
         method: method,
         uri: dialogflowURI,
         headers: {
-            'Authorization': 'Bearer ' + ayvaConfig.dialogflow.developerAccessToken
+            'Authorization': 'Bearer ' + Ayva.config.dialogflow.developerAccessToken
         },
         body: intentBody,
         json: true
