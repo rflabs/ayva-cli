@@ -1,7 +1,4 @@
-var Ayva = require('./ayvaConfigProvider')()
-
-
-var gitCommand = "git clone https://github.com/rflabs/ayva-helloWorld.git",
+var cloneHelloWorld = "git clone https://github.com/rflabs/ayva-helloWorld.git",
 path = require('path'),
 jsonFile = require('jsonfile'),
 exec = require('child_process').exec,
@@ -53,7 +50,7 @@ var walkthrough = function(req, optional) {
         }
         console.log(chalk.rgb(64,5,30)(ascii));
         console.log("\n")
-        exec(gitCommand, "", function(err, data){
+        exec(cloneHelloWorld, "", function(err, data){
             inquirer.prompt(prompts.choosePlatform).then(function(answer) {
                 console.log("\n")
                 if (answer.platform[0] === 'Google (Dialogflow)' && answer.platform.length === 1) {

@@ -31,13 +31,13 @@ program
 
 program
     .command('create')
-    .description( 'Create a new ayva voice assitant app')
+    .description('Create a new ayva voice assitant app')
     .action((cmd) => {require('./createAyva')(cmd)})
 
 program
     .command('init')
-    .description( 'Create a new ayva voice assitant app')
-    .action((cmd) => {require('./init')(cmd)}) 
+    .description('Configure Ayva inside an existing project or add another voice platform')
+    .action((cmd) => {require('./init')(cmd)})
 
 program.parse(process.argv)
 
