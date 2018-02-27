@@ -1,7 +1,8 @@
+var Ayva = require('./ayvaConfigProvider')()
+
+
 var gitCommand = "git clone https://github.com/rflabs/ayva-helloWorld.git",
 path = require('path'),
-ayvaConfigPath = path.join(process.env.PWD || process.cwd(), "/ayva-helloWorld/ayva.json"),
-ayvaConfig = require(path.join(__dirname,'/empty.ayva.json'))
 jsonFile = require('jsonfile'),
 exec = require('child_process').exec,
 prompts = require('./prompts.js'),
@@ -11,6 +12,7 @@ inquirer = require('inquirer')
 var clear = require('clear')
 var figlet = require('figlet');
 var chalk = require('chalk')
+
 
 var dialogflowSelection = function() {
     return new Promise(function(resolve, reject) {
