@@ -25,7 +25,12 @@ program
 
 program
     .command('create')
-    .description( 'Create a new ayva voice assitant app')
-    .action((cmd) => {require('./createAyva')(cmd)}) 
+    .description('Create a new ayva voice assitant app')
+    .action((cmd) => {require('./createAyva')(cmd)})
+
+program
+    .command('init')
+    .description('Configure Ayva inside an existing project. Use to add another voice platform')
+    .action((cmd) => {require('./init')(cmd)})
 
 program.parse(process.argv)

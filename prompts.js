@@ -44,15 +44,12 @@ var dfDevAccessToken = {
 
 var nameYourProjectPrompt = {
     name: "appName",
-    description: 'What would you like to call your application?',
-    // type: 'string',
-    // default: 'MyVoiceMailbox',
-    // required: true
+    description: 'Name your project: '
 }
 
 var choosePlatform = {
   name: 'platform',
-  message: chalk.rgb(3, 35, 110)("Which voice assistant(s) will you be building for?"),
+  message: chalk.rgb(3, 35, 110)("Which voice assistant(s) do you need to configure?"),
   type: 'checkbox',
   prefix: "-",
   default: 'Google (Dialogflow)',
