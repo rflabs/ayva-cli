@@ -1,5 +1,4 @@
 var chalk = require('chalk')
-var Prompt = require('prompt-checkbox');
 
 var chooseYourOwnAdventure = {
   name: 'platform',
