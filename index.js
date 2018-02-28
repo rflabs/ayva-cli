@@ -13,29 +13,29 @@ program
     .version(version)
 
 program
-    .command('helloWorld')
+    .command('helloWorld [path]')
     .description('Start here if you\'re following the Ayva HelloWorld walkthrough')
     .action((cmd) => {require('./tutorialSetup')(cmd)}) 
 
 program
-    .command('deploy')
+    .command('deploy [path]')
     .option('-d, --dialogflow', 'Update Dialogflow V1 from Ayva Speech Model')
     .option('-a, --alexa', 'Update Alexa from Ayva Speech Model')
     .description('Uploads language models to Dialogflow and Alexa according to project\'s ayva.json configuration')
     .action((cmd) => {require('./updateSpeechModels')(cmd)}) 
 
 program
-    .command('run')
+    .command('run <path>')
     .description('Starts local webhook proxy for use in AI platforms')
     .action((cmd) => {require('./runAndStartProxy')(cmd)}) 
 
 program
-    .command('create')
+    .command('create <path>')
     .description('Create a new ayva voice assitant app')
     .action((cmd) => {require('./createAyva')(cmd)})
 
 program
-    .command('init')
+    .command('init <path>')
     .description('Configure Ayva inside an existing project or add another voice platform')
     .action((cmd) => {require('./init')(cmd)})
 

@@ -1,14 +1,14 @@
 var cloneHelloWorld = "git clone https://github.com/rflabs/ayva-helloWorld.git",
-path = require('path'),
-jsonFile = require('jsonfile'),
-exec = require('child_process').exec,
-prompts = require('./prompts.js'),
-inquirer = require('inquirer')
+    path = require('path'),
+    jsonFile = require('jsonfile'),
+    exec = require('child_process').exec,
+    prompts = require('./prompts.js'),
+    inquirer = require('inquirer')
 
 // UX
-var clear = require('clear')
-var figlet = require('figlet');
-var chalk = require('chalk')
+var clear = require('clear'),
+    figlet = require('figlet'),
+    chalk = require('chalk')
 
 
 var dialogflowSelection = function() {
