@@ -22,14 +22,12 @@ var loadOrCreate = function(path){
     path =  path || scriptPath
     try{
         let config = require(p.join(scriptPath, path, "ayva.json"))
-        console.log(config)
         return {
             config,
             speechModel: require(p.join(scriptPath, path, config.pathToSpeechModel))
         }
     }catch (e) {
-        console.log(e)
-        return Ayva.Empty
+        return {config: Ayva.Empty}
     }
 }
 

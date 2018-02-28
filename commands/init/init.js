@@ -8,7 +8,6 @@ var dialogflowSelection = function(ayvaConfigPath, ayvaConfig) {
     return new Promise(function(resolve, reject) {
         inquirer.prompt(prompts.dfDevAccessToken).then(function(res) {
             ayvaConfig.dialogflow["developerAccessToken"] = res.dfDevAccessToken;
-            console.log(ayvaConfig)
             Ayva.saveConfig(ayvaConfigPath,ayvaConfig)            
             resolve(ayvaConfig)
         })
@@ -22,7 +21,6 @@ var alexaSelection = function(ayvaConfigPath, ayvaConfig) {
             ayvaConfig.alexa["skillId"] = res.alexaSkillId;
             inquirer.prompt(prompts.invocationPhrase).then(function(res) {
                 ayvaConfig.invocationPhrase = res.invocationPhrase
-                console.log(ayvaConfig)
                 Ayva.saveConfig(ayvaConfigPath, ayvaConfig)
                 resolve()
             })
