@@ -15,7 +15,6 @@ var dialogflowSelection = function(ayvaConfigPath, ayvaConfig) {
 }
 
 var alexaSelection = function(ayvaConfigPath, ayvaConfig) {
-    console.log(ayvaConfig)
     return new Promise(function(resolve, reject) {
         inquirer.prompt(prompts.alexaSkillId).then(function(res) {
             ayvaConfig.alexa["skillId"] = res.alexaSkillId;
@@ -29,7 +28,9 @@ var alexaSelection = function(ayvaConfigPath, ayvaConfig) {
 }
 
 var init = function(ayvaConfigPath){
-    var ayvaConfig = Ayva.loadOrCreate(ayvaConfigPath).config
+    if(!Ayva.existsAt(ayvaConfigPath)) Ayva.saveConfig(ayvaConfigPath, Ayva.Empty)
+
+    var ayvaConfig = Ayva.loadConfig(ayvaConfigPath).config
     inquirer.prompt(prompts.choosePlatform)
     .then(function(answer) {
         console.log("\n")

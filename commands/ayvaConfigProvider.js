@@ -7,28 +7,27 @@ var loadConfig = function(path){
     path =  path || scriptPath
 
     try{
-        let config = require(p.join(scriptPath,path, "ayva.json"))
+        console.log(p.join(path, "ayva.json"))
+        let config = require(p.join(path, "ayva.json"))
         return {
             config,
-            speechModel: require(p.join(scriptPath, path, config.pathToSpeechModel))
+            speechModel: require(p.join(path, config.pathToSpeechModel))
         }
     }catch (e) {
-        console.log("This does not appear to be an Ayva project. Run ayva init to initialize");
+        return {
+            config: Ayva.Empty
+        }
     }
 }
 
-
-var loadOrCreate = function(path){
+var existsAt = function(path){
     path =  path || scriptPath
     try{
-        let config = require(p.join(scriptPath, path, "ayva.json"))
-        return {
-            config,
-            speechModel: require(p.join(scriptPath, path, config.pathToSpeechModel))
-        }
-    }catch (e) {
-        return {config: Ayva.Empty}
+        require(p.join(path, "ayva.json"))
+    } catch (e) {
+        return false
     }
+    return true
 }
 
 var saveConfig = function(path, config){
@@ -44,6 +43,6 @@ var hasAlexaConfiguration = function(config){
     return !!(config.invocationPhrase && config.alexa && config.alexa.skillId)
 }
 
-var Ayva = {loadConfig, loadOrCreate, saveConfig, Empty, hasAlexaConfiguration, hasDialogflowConfiguration}
+var Ayva = {loadConfig, existsAt, saveConfig, Empty, hasAlexaConfiguration, hasDialogflowConfiguration}
 
 module.exports = Ayva;

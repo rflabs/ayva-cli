@@ -1,4 +1,3 @@
-var path = require('path')
 var rp = require('request-promise')
 var dialogflowBaseURI = "https://api.dialogflow.com/v1/intents/"
 var emptyIntentBody = require('./basicIntent.js')
