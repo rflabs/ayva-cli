@@ -1,18 +1,16 @@
 var p = require('path'),
     jsonFile = require('jsonfile'),
     Empty = require('./empty.ayva.json')
-
+    scriptPath = p.join(process.env.PWD || process.cwd(), "/ayva.json")
+    
 var loadConfig = function(path){
-    if(!path)
-        path = p.join(process.env.PWD || process.cwd(), "/ayva.json") //default to console path
+    var configPath =  path || scriptPath
 
     try{
         let config = require(path)
         return {
-            configPath: path,
             config,
-
-            speechModel: require(path.join(process.env.PWD||process.cwd(), config.pathToSpeechModel))
+            speechModel: require(path.join(configPath, config.pathToSpeechModel))
         }
     }catch (e) {
         console.log("This does not appear to be an Ayva project. Run ayva init to initialize");
@@ -20,7 +18,8 @@ var loadConfig = function(path){
 }
 
 var saveConfig = function(path, config){
-    jsonFile.writeFileSync(path, config)
+    path = path || scriptPath
+    jsonFile.writeFileSync(path, config);
 }
 
 var hasDialogflowConfiguration =  function(config){
