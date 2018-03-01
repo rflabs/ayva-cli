@@ -4,13 +4,11 @@ var emptyIntentBody = require('./basicIntent.js')
 
 var Ayva = require('../../ayvaConfigProvider')
 
-var uploadSpeechModelToDialogflow = function(){
-    if(!Ayva) return; 
-
-    getDialogflowModel(Ayva.config)
+var uploadSpeechModelToDialogflow = function(ayvaConfig){
+    getDialogflowModel(ayvaConfig.config)
         .then(function(dialogflowModel){
-            Ayva.speechModel.intents.map((intentConfig) => {
-                syncIntentWithDialogflow(intentConfig, dialogflowModel)
+            ayvaConfig.speechModel.intents.map((intentConfig) => {
+                syncIntentWithDialogflow(ayvaConfig, intentConfig, dialogflowModel)
             })
         })
 }
@@ -37,7 +35,7 @@ var getDialogflowModel = function(ayvaConfig){
     })
 }
 
-var syncIntentWithDialogflow = function(intentConfig, dialogflowModel){
+var syncIntentWithDialogflow = function(ayvaConfig, intentConfig, dialogflowModel){
     var method = "POST"
     var dialogflowURI = dialogflowBaseURI;
     var dialogflowIntent = emptyIntentBody();
@@ -71,7 +69,7 @@ var syncIntentWithDialogflow = function(intentConfig, dialogflowModel){
         method: method,
         uri: dialogflowURI,
         headers: {
-            'Authorization': 'Bearer ' + Ayva.config.dialogflow.developerAccessToken
+            'Authorization': 'Bearer ' + ayvaConfig.config.dialogflow.developerAccessToken
         },
         body: intentBody,
         json: true

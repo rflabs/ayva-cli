@@ -6,9 +6,10 @@ var _ = require('lodash')
 
 var Ayva = require('../../ayvaConfigProvider')
 
-var uploadSpeechModelToAlexa = function(){
-    writeAlexaModelToFile(Ayva.config, Ayva.speechModel)
-        .then((res) => askUpdateModel())
+var uploadSpeechModelToAlexa = function(ayvaConfig){
+    console.log(ayvaConfig)
+    writeAlexaModelToFile(ayvaConfig.config, ayvaConfig.speechModel)
+        .then((res) => askUpdateModel(ayvaConfig))
         .catch((err) => console.log(`Error writing Alexa speech model: ${err}`))
 }
 

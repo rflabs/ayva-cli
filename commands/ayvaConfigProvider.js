@@ -7,7 +7,6 @@ var loadConfig = function(path){
     path =  path || scriptPath
 
     try{
-        console.log(p.join(path, "ayva.json"))
         let config = require(p.join(path, "ayva.json"))
         return {
             config,
@@ -23,7 +22,8 @@ var loadConfig = function(path){
 var existsAt = function(path){
     path =  path || scriptPath
     try{
-        require(p.join(path, "ayva.json"))
+        var config = require(p.join(path, "ayva.json"))
+        require(p.join(path, config.pathToSpeechModel))
     } catch (e) {
         return false
     }

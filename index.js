@@ -17,7 +17,7 @@ program
     .option('-d, --dialogflow', 'Update Dialogflow V1 from Ayva Speech Model')
     .option('-a, --alexa', 'Update Alexa from Ayva Speech Model')
     .description('Upload language models to Dialogflow and Alexa')
-    .action((cmd) => {require('./commands/deploy/updateSpeechModels')(cmd)}) 
+    .action((a,b,c) => {require('./commands/deploy/updateSpeechModels')(a,b)}) 
 
 program
     .command('run [path]')

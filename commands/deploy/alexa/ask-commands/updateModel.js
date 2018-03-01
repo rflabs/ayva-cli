@@ -1,6 +1,5 @@
 var fs = require('fs'),
-    exec = require('child-process-promise').exec,
-    Ayva = require('../../../ayvaConfigProvider')
+    exec = require('child-process-promise').exec
 
                     /*  ask api update-model
                         [-s|--skill-id <skillId>]
@@ -11,10 +10,8 @@ var fs = require('fs'),
                         [--debug]
 
                     */
-var updateModel = function(){
-    if(!Ayva) return;
-
-    var commandText = `ask api update-model -s ${Ayva.config.alexa.skillId} -f ./en-US.json -l en-US`;
+var updateModel = function(ayvaConfig){
+    var commandText = `ask api update-model -s ${ayvaConfig.config.alexa.skillId} -f ./en-US.json -l en-US`;
     exec(commandText)
         .then((data) =>  { 
             if(data.stderr) 
