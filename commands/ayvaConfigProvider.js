@@ -1,26 +1,36 @@
 var p = require('path'),
     jsonFile = require('jsonfile'),
-    Empty = require('./empty.ayva.json')
-    scriptPath = p.join(process.env.PWD || process.cwd())
+    Empty = require('./empty.ayva.json'),
+    scriptPath = p.join(process.env.PWD || process.cwd()),
+    fs = require('fs')
     
 var loadConfig = function(path){
-    path =  path || scriptPath
-
-    try{
-        let config = require(p.join(path, "ayva.json"))
-        return {
-            config,
-            speechModel: require(p.join(path, config.pathToSpeechModel))
-        }
-    }catch (e) {
-        return {
-            config: Ayva.Empty
-        }
+    if(!path){
+        path = scriptPath
+    } else {
+        path = p.join(scriptPath, path)
     }
+    var ayvaConfig = {};
+    try{
+        ayvaConfig.config = require(p.join(path, "ayva.json"))
+    }catch (e) {
+        ayvaConfig.config = Ayva.Empty
+    }
+    
+    try{
+        ayvaConfig.speechModel = require(p.join(path, ayvaConfig.config.pathToSpeechModel))
+    } catch (e) {
+         fs.writeFileSync(p.join(path, ayvaConfig.config.pathToSpeechModel), "")
+    }
+    return ayvaConfig
 }
 
 var existsAt = function(path){
-    path =  path || scriptPath
+    if(!path){
+        path = scriptPath
+    } else {
+        path = p.join(scriptPath, path)
+    }
     try{
         var config = require(p.join(path, "ayva.json"))
         require(p.join(path, config.pathToSpeechModel))
@@ -31,7 +41,11 @@ var existsAt = function(path){
 }
 
 var saveConfig = function(path, config){
-    path =  path || scriptPath
+    if(!path){
+        path = scriptPath
+    } else {
+        path = p.join(scriptPath, path)
+    }
     jsonFile.writeFileSync(p.join(path, "ayva.json"), config);
 }
 
