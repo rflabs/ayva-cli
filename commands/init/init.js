@@ -2,6 +2,8 @@ var Ayva = require('../ayvaConfigProvider');
 
 var inquirer = require('inquirer')
 var prompts = require('../prompts')
+var fs = require('fs')
+var p = require('path')
 
 var dialogflowSelection = function(ayvaConfigPath, ayvaConfig) {
     
@@ -28,9 +30,14 @@ var alexaSelection = function(ayvaConfigPath, ayvaConfig) {
 }
 
 var init = function(ayvaConfigPath){
-    if(!Ayva.existsAt(ayvaConfigPath)) Ayva.saveConfig(ayvaConfigPath, Ayva.Empty)
-
+    if(!Ayva.existsAt(ayvaConfigPath))
+        Ayva.saveConfig(ayvaConfigPath, Ayva.Empty)
+    
     var ayvaConfig = Ayva.loadConfig(ayvaConfigPath).config
+
+    if(!fs.existsSync(p.join(ayvaConfigPath|| "", ayvaConfig.pathToSpeechModel)))
+        fs.writeFileSync(p.join(ayvaConfigPath|| "", ayvaConfig.pathToSpeechModel), "")
+
     inquirer.prompt(prompts.choosePlatform)
     .then(function(answer) {
         console.log("\n")
