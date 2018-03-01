@@ -76,7 +76,7 @@ var syncIntentWithDialogflow = function(ayvaConfig, intentConfig, dialogflowMode
     };
     rp(options)
         .then(function (parsedBody) {
-            console.log(`Successfully uploaded intent ${intentBody.name} to Google`)
+            console.log(`Successfully deployed intent ${intentBody.name} to Google`)
         })
         .catch(function (err) {
             console.log(`Intent ${intentBody.name} failed to upload to Dialogflow`)
