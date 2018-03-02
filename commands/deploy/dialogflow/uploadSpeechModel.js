@@ -1,23 +1,52 @@
 var rp = require('request-promise')
-var dialogflowBaseURI = "https://api.dialogflow.com/v1/intents/"
-var emptyIntentBody = require('./basicIntent.js')
+var dialogflowBaseURI = "https://api.dialogflow.com/v1"
+var emptyIntentBody = require('./basicIntent')
+var emptyEntityBody = require('./basicEntity')
 
 var Ayva = require('../../ayvaConfigProvider')
 
 var uploadSpeechModelToDialogflow = function(ayvaConfig){
-    getDialogflowModel(ayvaConfig.config)
-        .then(function(dialogflowModel){
-            ayvaConfig.speechModel.intents.map((intentConfig) => {
-                syncIntentWithDialogflow(ayvaConfig, intentConfig, dialogflowModel)
-            })
+    getEntityModel(ayvaConfig.config).then( remoteEntityModel =>{
+        ayvaConfig.speechModel.entities.map(entityConfig => {
+            syncEntityWithDialogflow(ayvaConfig, entityConfig, remoteEntityModel)
         })
+    })
+
+    getIntentModel(ayvaConfig.config).then( remoteIntentModel => {
+        ayvaConfig.speechModel.intents.map( intentConfig => {
+            syncIntentWithDialogflow(ayvaConfig, intentConfig, remoteIntentModel)
+        })
+    })
+
 }
 
-var getDialogflowModel = function(ayvaConfig){
+var getEntityModel = function(ayvaConfig){
     return new Promise(function(resolve,reject){
         var options = {
             method: 'GET',
-            uri: dialogflowBaseURI,
+            uri: dialogflowBaseURI + "/entities",
+            headers: {
+                'Authorization': 'Bearer ' + ayvaConfig.dialogflow.developerAccessToken
+            }
+        };
+    
+        rp(options)
+            .then(function(res){
+                res = JSON.parse(res)
+                var model = {}
+                res.map((slot) => {
+                    model[slot.name] = slot.id
+                })
+                resolve(model);
+            })
+    })
+}
+
+var getIntentModel = function(ayvaConfig){
+    return new Promise(function(resolve,reject){
+        var options = {
+            method: 'GET',
+            uri: dialogflowBaseURI + "/intents",
             headers: {
                 'Authorization': 'Bearer ' + ayvaConfig.dialogflow.developerAccessToken
             }
@@ -35,16 +64,56 @@ var getDialogflowModel = function(ayvaConfig){
     })
 }
 
-var syncIntentWithDialogflow = function(ayvaConfig, intentConfig, dialogflowModel){
+var syncEntityWithDialogflow = function(ayvaConfig, entityConfig, remoteEntityModel){
+    
     var method = "POST"
-    var dialogflowURI = dialogflowBaseURI;
+    var dialogflowURI = dialogflowBaseURI + "/entities/";
+    var entityBody = emptyEntityBody();
+    entityBody.name = entityConfig.name
+
+    if(remoteEntityModel[entityConfig.name]){
+        entityBody.id = remoteEntityModel[entityConfig.name],
+        method = "PUT"
+        dialogflowURI += entityBody.id
+    }
+
+    entityConfig.values.map(e => {
+        let value = e.name || e
+        let synonyms = e.synonyms || []
+        if(!synonyms.includes(value)) synonyms.push(value);
+        entityBody.entries.push({value,synonyms})
+    })
+
+    var options = {
+        method: method,
+        uri: dialogflowURI,
+        headers: {
+            'Authorization': 'Bearer ' + ayvaConfig.config.dialogflow.developerAccessToken
+        },
+        body: entityBody,
+        json: true
+    };
+
+    rp(options)
+        .then(function (parsedBody) {
+            console.log(`Successfully deployed entity ${entityBody.name} to Google`)
+        })
+        .catch(function (err) {
+            console.log(`Intent ${entityBody.name} failed to upload to Dialogflow`)
+            console.log(err.error)
+        });
+}
+
+var syncIntentWithDialogflow = function(ayvaConfig, intentConfig, remoteIntentModel){
+    var method = "POST"
+    var dialogflowURI = dialogflowBaseURI + "/intents/";
     var dialogflowIntent = emptyIntentBody();
     var intentBody = Object.assign({}, dialogflowIntent, {"name": intentConfig.name})
     intentBody.responses.unshift({"action": intentConfig.name, "parameters":[]})
 
-    if(dialogflowModel[intentConfig.name])
+    if(remoteIntentModel[intentConfig.name])
     {
-        intentBody.id = dialogflowModel[intentConfig.name]
+        intentBody.id = remoteIntentModel[intentConfig.name]
         method = "PUT"
         dialogflowURI += intentBody.id
     }

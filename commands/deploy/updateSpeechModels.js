@@ -15,11 +15,11 @@ var updateSpeechModels = function(path, cmd){
     }
 }
 
-var updateByFlags = function(cmd, path){
+var updateByFlags = function(cmd, ayvaConfig){
     if(cmd.dialogflow)
-        updateSpeechModelDF()
+        updateSpeechModelDF(ayvaConfig)
     if(cmd.alexa)
-        updateSpeechModelAlexa()
+        updateSpeechModelAlexa(ayvaConfig)
 }
 
 var updateByConfig = function(ayvaConfig){
