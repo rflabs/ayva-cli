@@ -27,7 +27,7 @@ var walkthrough = function(installPath) {
         }
 
         if(!installPath) {
-            throw new Error("Project name undefined. Please provide a project name using the syntax ayva create projectName")
+            throw new Error("Project name undefined. Please provide a project name using the syntax ayva create projectName or /path/to/projectName")
         }
         let cloneHelloWorld = `git clone --depth=1 https://github.com/rflabs/ayva-helloWorld.git ${installPath} && rm -rf ${installPath}/.git`; //Don't use original repo
         

@@ -49,7 +49,7 @@ var nameYourProjectPrompt = {
 var choosePlatform = {
   name: 'platform',
   message: chalk.rgb(3, 35, 110)("Which voice assistant(s) do you need to configure?"),
-  type: 'checkbox',
+  type: 'list',
   prefix: "-",
   default: 'Google (Dialogflow)',
   choices: [
