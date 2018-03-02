@@ -19,7 +19,8 @@ var alexaModel = function(){
                         "slots": [],
                         "samples": []
                     }
-                ]
+                ],
+                "types": []
             }
         }
     }
@@ -43,5 +44,24 @@ module.exports = alexaModel
         "My name is {firstName}"
     ]
 }
+
+
+//SAMPLE CUSTOM ENTITY
+    "types": [
+        {
+            "name": "Sports",
+            "values": [
+                {
+                    "id": "",
+                    "name": {
+                        "value": "Football",
+                        "synonyms": [
+                            "gridiron"
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
 
 */

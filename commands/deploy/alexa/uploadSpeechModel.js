@@ -16,7 +16,22 @@ var writeAlexaModelToFile = function(ayvaConfig, ayvaSpeechModel){
     return new Promise((resolve, reject) => {
         var alm = getAlexaLanguageModel()
         alm.interactionModel.languageModel.invocationName = ayvaConfig.invocationPhrase;
-        ayvaSpeechModel.intents.map((intent) => {
+        ayvaSpeechModel.entities.map(entity => {
+            let values = []
+
+            entity.values.map(e => {
+                let value = e.name || e
+                let synonyms = e.synonyms || []
+                if(!synonyms.includes(value)) synonyms.push(value);
+                values.push({id:"",name:{value,synonyms}})
+            })
+        
+            alm.interactionModel.languageModel.types.push({
+                name: entity.name,
+                values
+            })
+        })
+        ayvaSpeechModel.intents.map(intent => {
             var alexaFormattedIntent = {"name": intent.name, "slots":[], "samples": []}
             addSlotsToModel(intent.slots, alexaFormattedIntent)
             addSayingsToModel(intent.utterances, alexaFormattedIntent)
