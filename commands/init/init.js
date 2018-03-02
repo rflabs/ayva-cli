@@ -5,8 +5,7 @@ var prompts = require('../prompts')
 var fs = require('fs')
 var p = require('path')
 
-var dialogflowSelection = function(ayvaConfigPath, ayvaConfig) {
-    
+var dialogflowSelection = function(ayvaConfigPath, ayvaConfig) { 
     return new Promise(function(resolve, reject) {
         inquirer.prompt(prompts.dfDevAccessToken).then(function(res) {
             ayvaConfig.dialogflow["developerAccessToken"] = res.dfDevAccessToken;
@@ -20,11 +19,8 @@ var alexaSelection = function(ayvaConfigPath, ayvaConfig) {
     return new Promise(function(resolve, reject) {
         inquirer.prompt(prompts.alexaSkillId).then(function(res) {
             ayvaConfig.alexa["skillId"] = res.alexaSkillId;
-            inquirer.prompt(prompts.invocationPhrase).then(function(res) {
-                ayvaConfig.invocationPhrase = res.invocationPhrase
-                Ayva.saveConfig(ayvaConfigPath, ayvaConfig)
-                resolve()
-            })
+            Ayva.saveConfig(ayvaConfigPath, ayvaConfig)
+            resolve()
         })
     })
 }

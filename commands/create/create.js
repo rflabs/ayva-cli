@@ -25,7 +25,8 @@ var walkthrough = function(installPath) {
             console.dir(err);
             return;
         }
-        var cloneHelloWorld = `git clone https://github.com/rflabs/ayva-helloWorld.git ${installPath}`;
+        var cloneHelloWorld = `git clone --depth=1 https://github.com/rflabs/ayva-helloWorld.git ${installPath} && rm -rf ${installPath}/.git`; //Don't use original repo
+
         console.log(chalk.rgb(200,200,90)(ascii));
         console.log("\n")
         exec(cloneHelloWorld, "", function(err, data){

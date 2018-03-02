@@ -9,7 +9,8 @@ p = require('path');
 var walkthrough = function(installPath) {
     var config = Ayva.Empty;
     installPath = installPath || 'ayva-helloWorld'
-    var cloneHelloWorld = `git clone https://github.com/rflabs/ayva-helloWorld.git ${installPath}`;
+
+    var cloneHelloWorld = `git clone --depth=1 https://github.com/rflabs/ayva-helloWorld.git ${installPath} && rm -rf ${installPath}/.git`; //Don't use original repo
     
     console.log('Cloning repo from git...')
     exec(cloneHelloWorld, "", function(err, data){
