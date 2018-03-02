@@ -1,9 +1,10 @@
-var path = require('path'),
+var p = require('path'),
     jsonFile = require('jsonfile'),
     exec = require('child_process').exec,
     prompts = require('../prompts.js'),
     inquirer = require('inquirer'),
-    init = require('../init/init')
+    init = require('../init/init'),
+    Ayva = require('../ayvaConfigProvider')
 
 // UX
 var clear = require('clear'),
@@ -21,11 +22,20 @@ var walkthrough = function(installPath) {
 
     figlet.text('Ayva', outputFormat, function(err, ascii) {
         if (err) {
-            console.log('Something went wrong...');
-            console.dir(err);
+            console.log(err);
             return;
         }
-        var cloneHelloWorld = `git clone --depth=1 https://github.com/rflabs/ayva-helloWorld.git ${installPath} && rm -rf ${installPath}/.git`; //Don't use original repo
+
+        if(!installPath) {
+            throw new Error("Project name undefined. Please provide a project name using the syntax ayva create projectName")
+        }
+        let cloneHelloWorld = `git clone --depth=1 https://github.com/rflabs/ayva-helloWorld.git ${installPath} && rm -rf ${installPath}/.git`; //Don't use original repo
+        
+        //Auto generate "project name" from end of supplied path, and use it as invocation phrase
+        let ayvaConfig = Ayva.loadConfig(installPath).config;
+        let pathSplit = installPath.split(p.sep)
+        ayvaConfig.invocationPhrase = pathSplit[pathSplit.length-1]
+        Ayva.saveConfig(installPath,ayvaConfig)
 
         console.log(chalk.rgb(200,200,90)(ascii));
         console.log("\n")
