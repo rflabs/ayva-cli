@@ -36,18 +36,8 @@ var init = function(ayvaConfigPath){
 
     inquirer.prompt(prompts.choosePlatform)
     .then(function(answer) {
-        console.log("\n")
-        if (answer.platform[0] === 'Google (Dialogflow)' && answer.platform.length === 1) {
-            dialogflowSelection(ayvaConfigPath, ayvaConfig)
-        }
-        if (answer.platform[0] === 'Alexa' && answer.platform.length === 1) {
-            alexaSelection(ayvaConfigPath, ayvaConfig)
-        }
-        if (answer.platform.length > 1) {
-            dialogflowSelection(ayvaConfigPath, ayvaConfig).then(function() {
-                alexaSelection(ayvaConfigPath, ayvaConfig)
-            })
-        }
+        answer.platform === 'Google (Dialogflow)' && dialogflowSelection(ayvaConfigPath, ayvaConfig) 
+        answer.platform === 'Alexa' && alexaSelection(ayvaConfigPath, ayvaConfig)     
     })
 }
 

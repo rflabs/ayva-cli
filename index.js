@@ -41,7 +41,7 @@ program.parse(process.argv)
 //Error Cases
 ////////////
 
-//No 'ayva' command
+//No 'ayva' index command
 program.args.length == 0 && program.help()
 
 //Help if not a command

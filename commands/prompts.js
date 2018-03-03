@@ -54,7 +54,8 @@ var choosePlatform = {
   default: 'Google (Dialogflow)',
   choices: [
     'Google (Dialogflow)',
-    'Alexa'
+    'Alexa',
+    chalk.red("exit")
   ]
 }
 
