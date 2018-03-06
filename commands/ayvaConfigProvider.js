@@ -1,23 +1,28 @@
 var p = require('path'),
     jsonFile = require('jsonfile'),
     Empty = require('./empty.ayva.json'),
-    scriptPath = p.join(process.env.PWD || process.cwd())
+    scriptPath = p.join(process.env.PWD || process.cwd()),
+    findFiles = require('recursive-readdir')
     
 var loadConfig = function(path){
-    path = getWorkingPath(path)
+    return new Promise( (resolve, reject) => {
+        path = getWorkingPath(path)
 
-    var ayvaConfig = {};
-    try{
-        ayvaConfig.config = require(p.join(path, "ayva.json"))
-    }catch (e) {
-        ayvaConfig.config = Ayva.Empty
-    }
+        var ayvaConfig = {speechModel: {intents: [], entities: []}};
+        try{
+            ayvaConfig.config = require(p.join(path, "ayva.json"))
+        }catch (e) {
+            ayvaConfig.config = Ayva.Empty
+        }
 
-    try{
-        ayvaConfig.speechModel = require(p.join(path, ayvaConfig.config.pathToSpeechModel))
-    } catch (e) {
-    }
-    return ayvaConfig
+        findFiles(p.join(path, ayvaConfig.config.pathToSpeechModel, "/Intents"), function(e, files){
+            files.map(f => ayvaConfig.speechModel.intents.push(require(f)))
+            findFiles(p.join(path, ayvaConfig.config.pathToSpeechModel, "/Entities"), function(e, files){
+                files.map(f => ayvaConfig.speechModel.entities.push(require(f)))
+                resolve(ayvaConfig)
+            })
+        })
+    })
 }
 
 var existsAt = function(path){
@@ -50,6 +55,7 @@ var getWorkingPath = function(path){
         return p.join(scriptPath, path)
     }
 }
+
 
 var Ayva = {loadConfig, existsAt, saveConfig, Empty, hasAlexaConfiguration, hasDialogflowConfiguration}
 

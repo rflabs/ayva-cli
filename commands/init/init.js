@@ -29,25 +29,26 @@ var init = function(ayvaConfigPath){
     if(!Ayva.existsAt(ayvaConfigPath))
         Ayva.saveConfig(ayvaConfigPath, Ayva.Empty)
     
-    var ayvaConfig = Ayva.loadConfig(ayvaConfigPath).config
-
-    if(!fs.existsSync(p.join(ayvaConfigPath|| "", ayvaConfig.pathToSpeechModel)))
+    Ayva.loadConfig(ayvaConfigPath).then(c => {
+        let ayvaConfig = c.config;
+        if(!fs.existsSync(p.join(ayvaConfigPath|| "", ayvaConfig.pathToSpeechModel)))
         fs.writeFileSync(p.join(ayvaConfigPath|| "", ayvaConfig.pathToSpeechModel), "")
 
-    inquirer.prompt(prompts.choosePlatform)
-    .then(function(answer) {
-        console.log("\n")
-        if (answer.platform[0] === 'Google (Dialogflow)' && answer.platform.length === 1) {
-            dialogflowSelection(ayvaConfigPath, ayvaConfig)
-        }
-        if (answer.platform[0] === 'Alexa' && answer.platform.length === 1) {
-            alexaSelection(ayvaConfigPath, ayvaConfig)
-        }
-        if (answer.platform.length > 1) {
-            dialogflowSelection(ayvaConfigPath, ayvaConfig).then(function() {
+        inquirer.prompt(prompts.choosePlatform)
+        .then(function(answer) {
+            console.log("\n")
+            if (answer.platform[0] === 'Google (Dialogflow)' && answer.platform.length === 1) {
+                dialogflowSelection(ayvaConfigPath, ayvaConfig)
+            }
+            if (answer.platform[0] === 'Alexa' && answer.platform.length === 1) {
                 alexaSelection(ayvaConfigPath, ayvaConfig)
-            })
-        }
+            }
+            if (answer.platform.length > 1) {
+                dialogflowSelection(ayvaConfigPath, ayvaConfig).then(function() {
+                    alexaSelection(ayvaConfigPath, ayvaConfig)
+                })
+            }
+        })
     })
 }
 

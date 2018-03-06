@@ -23,13 +23,13 @@ var updateSpeechModels = function(path, cmd){
         if(!Ayva.existsAt(path))
             return console.log(prompts.formatAsError("This does not seem to be an Ayva project, try running ayva init or ayva create first"));
 
-        var ayvaConfig = Ayva.loadConfig(path);
-
-        if(cmd.dialogflow || cmd.alexa){
-            updateByFlags(cmd, ayvaConfig)
-        } else {
-            updateByConfig(ayvaConfig)
-        }
+        Ayva.loadConfig(path).then(ayvaConfig => {
+            if(cmd.dialogflow || cmd.alexa){
+                updateByFlags(cmd, ayvaConfig)
+            } else {
+                updateByConfig(ayvaConfig)
+            }
+        })        
     })
 }
 
