@@ -15,10 +15,17 @@ var loadConfig = function(path){
             ayvaConfig.config = Ayva.Empty
         }
 
+        //Package up the intents and entities in the SpeechModel folder
         findFiles(p.join(path, ayvaConfig.config.pathToSpeechModel, "/Intents"), function(e, files){
-            files.map(f => ayvaConfig.speechModel.intents.push(require(f)))
+            files.map(f => {
+                var intent = require(f)
+                valid(intent) && ayvaConfig.speechModel.intents.push(intent)
+            })
             findFiles(p.join(path, ayvaConfig.config.pathToSpeechModel, "/Entities"), function(e, files){
-                files.map(f => ayvaConfig.speechModel.entities.push(require(f)))
+                files.map(f => {
+                    var entity = require(f);
+                    valid(entity) && ayvaConfig.speechModel.entities.push(entity);
+                })
                 resolve(ayvaConfig)
             })
         })
@@ -54,6 +61,10 @@ var getWorkingPath = function(path){
     } else {
         return p.join(scriptPath, path)
     }
+}
+
+var valid = function(item){
+    return !!(item.name)
 }
 
 

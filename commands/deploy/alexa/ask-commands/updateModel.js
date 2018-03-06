@@ -19,7 +19,7 @@ var updateModel = function(ayvaConfig){
             else {
                 fs.unlink('./en-US.json', function(data,err){
                     if(!err)
-                        console.log("Successful deploy to Alexa")
+                        console.log("Successfully deployed Ayva Speech Model to Alexa")
                 })
             }
         })

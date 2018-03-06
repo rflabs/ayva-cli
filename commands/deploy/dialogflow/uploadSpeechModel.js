@@ -103,7 +103,7 @@ var syncEntityWithDialogflow = function(ayvaConfig, entityConfig, remoteEntityMo
 
     rp(options)
         .then(function (parsedBody) {
-            console.log(prompts.formatAsMainText(`Successfully deployed entity ${entityBody.name} to Google`))
+            console.log(`Successfully deployed entity to Google: ${entityBody.name}`)
         })
         .catch(function (err) {
             console.log(prompts.formatAsError(`Intent ${entityBody.name} failed to upload to Dialogflow`))
@@ -152,7 +152,7 @@ var syncIntentWithDialogflow = function(ayvaConfig, intentConfig, remoteIntentMo
     };
     rp(options)
         .then(function (parsedBody) {
-            console.log(`Successfully deployed intent ${intentBody.name} to Google`)
+            console.log(`Successfully deployed intent to Google: ${intentBody.name} `)
         })
         .catch(function (err) {
             console.log(`Intent ${intentBody.name} failed to upload to Dialogflow`)
