@@ -22,14 +22,14 @@ var walkthrough = function(installPath) {
 
     figlet.text('Ayva', outputFormat, function(err, ascii) {
         if (err) {
-            console.log(err);
+            console.log(prompts.formatAsError(err));
             return;
         }
-        console.log(chalk.rgb(200,200,90)(ascii));
+        console.log(prompts.formatAsMainText(ascii));
         console.log("\n")
 
         if(!installPath) 
-            throw new Error("Project name undefined. Please provide a project name using the syntax ayva create projectName or /path/to/projectName")
+            return console.log(prompts.formatAsError("Project name undefined. Please provide a project name using the syntax ayva create projectName or ayva create /path/to/projectName"))
         
         let cloneHelloWorld = `git clone --depth=1 https://github.com/rflabs/ayva-helloWorld.git ${installPath} && rm -rf ${installPath}/.git`; //Don't use original repo
         
@@ -39,7 +39,7 @@ var walkthrough = function(installPath) {
         ayvaConfig.invocationPhrase = pathSplit[pathSplit.length-1]
 
         exec(cloneHelloWorld, "", function(err, data){
-            if(err) return console.log("Create failed: Folder already exists at the specified path. Try deleting or specifying another path")
+            if(err) return console.log(prompts.formatAsError("Create failed: Folder already exists at the specified path. Try deleting or specifying another path"))
             Ayva.saveConfig(installPath, ayvaConfig)
             init(installPath)
         })

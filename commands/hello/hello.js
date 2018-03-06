@@ -8,8 +8,7 @@ p = require('path');
 
 // UX
 var clear = require('clear'),
-    figlet = require('figlet'),
-    chalk = require('chalk')
+    figlet = require('figlet')
 
 var walkthrough = function(installPath) {
     clear();
@@ -24,7 +23,7 @@ var walkthrough = function(installPath) {
             console.log(err);
             return;
         }
-        console.log(chalk.rgb(200,200,90)(ascii));
+        console.log(prompts.formatAsMainText(ascii));
         console.log("\n")
         
         var config = Ayva.Empty;
@@ -34,7 +33,7 @@ var walkthrough = function(installPath) {
         
         console.log('Cloning repo from git...')
         exec(cloneHelloWorld, "", function(err, data){
-            if(err) return console.log(chalk.red("Hello failed: Folder already exists at the specified path. Try deleting or specifying another path"))
+            if(err) return console.log(prompts.formatAsError("Hello failed: Folder already exists at the specified path. Try deleting or specifying another path"))
             init(installPath)
         })
     })

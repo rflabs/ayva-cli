@@ -1,8 +1,16 @@
 var chalk = require('chalk')
 
+var formatAsMainText = function(text){
+  return chalk.rgb(200,200,90)(text)
+}
+
+var formatAsError = function(text){
+  return chalk.red(text)
+}
+
 var chooseYourOwnAdventure = {
   name: 'platform',
-  message: chalk.rgb(3, 35, 110)("Welcome brave traveler! A mean-ol dragon has kidnapped your princess! In this time of great violence, can you choose a less aggressive form of confrontation, and talk the dragon down using reason? Choose your approach:"),
+  message: formatAsMainText("Welcome brave traveler! A mean-ol dragon has kidnapped your princess! In this time of great violence, can you choose a less aggressive form of confrontation, and talk the dragon down using reason? Choose your approach:"),
   type: 'list',
   prefix: "-",
   default: 'Google (Dialogflow)',
@@ -15,7 +23,7 @@ var chooseYourOwnAdventure = {
 
 var dfClientId = {
   name:'dfClientId',
-  message: chalk.rgb(3, 35, 110)("Please enter your Dialogflow client id:"),
+  message: formatAsMainText("Please enter your Dialogflow client id:"),
   type: 'input',
   prefix: "-",
   validate: function(value) {
@@ -29,7 +37,7 @@ var dfClientId = {
 
 var dfDevAccessToken = {
   name: 'dfDevAccessToken',
-  message: chalk.rgb(3, 35, 110)("Please enter your Dialogflow Developer Access Token: "),
+  message: formatAsMainText("Please enter your Dialogflow Developer Access Token: "),
   type: 'input',
   prefix: "-",
   validate: function(value) {
@@ -48,7 +56,7 @@ var nameYourProjectPrompt = {
 
 var choosePlatform = {
   name: 'platform',
-  message: chalk.rgb(3, 35, 110)("Which voice assistant(s) do you need to configure?"),
+  message: formatAsMainText("Which voice assistant(s) do you need to configure?"),
   type: 'checkbox',
   prefix: "-",
   choices: [
@@ -59,7 +67,7 @@ var choosePlatform = {
 
 var alexaSkillId = {
   name: 'alexaSkillId',
-  message: chalk.rgb(3, 35, 110)("Please enter your Alexa Skills ID: "),
+  message: formatAsMainText("Please enter your Alexa Skills ID: "),
   type: 'input',
   prefix: '-',
   validate: function(value) {
@@ -73,7 +81,7 @@ var alexaSkillId = {
 
 var invocationPhrase = {
   name: 'invocationPhrase',
-  message: chalk.rgb(3, 35, 110)("Please enter your preferred invocation phrase for Alexa: "),
+  message: formatAsMainText("Please enter your preferred invocation phrase for Alexa: "),
   type: 'input',
   prefix: '-',
   validate: function(value) {
@@ -87,13 +95,15 @@ var invocationPhrase = {
 
 
 var Prompts = {
-    nameYourProjectPrompt: nameYourProjectPrompt,
-    chooseYourOwnAdventure: chooseYourOwnAdventure,
-    dfClientId: dfClientId,
-    dfDevAccessToken: dfDevAccessToken,
-    choosePlatform: choosePlatform,
-    alexaSkillId: alexaSkillId,
-    invocationPhrase: invocationPhrase
+  nameYourProjectPrompt,
+  chooseYourOwnAdventure,
+  dfClientId,
+  dfDevAccessToken,
+  choosePlatform,
+  alexaSkillId,
+  invocationPhrase,
+  formatAsError,
+  formatAsMainText
 }
 
 module.exports = Prompts;
