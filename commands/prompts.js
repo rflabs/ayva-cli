@@ -10,14 +10,13 @@ var formatAsError = function(text){
 
 var chooseYourOwnAdventure = {
   name: 'platform',
-  message: formatAsMainText("Welcome brave traveler! A mean-ol dragon has kidnapped your princess! In this time of great violence, can you choose a less aggressive form of confrontation, and talk the dragon down using reason? Choose your approach:"),
+  message: formatAsMainText("Welcome to Ayva! Which platform(s) would you like to configure for this project? (You can always add more later)"),
   type: 'list',
   prefix: "-",
   default: 'Google (Dialogflow)',
   choices: [
     'Google (Dialogflow)',
-    'Alexa',
-    'I am a coward and must respectfully decline'
+    'Alexa'
   ]
 }
 
@@ -56,9 +55,9 @@ var nameYourProjectPrompt = {
 
 var choosePlatform = {
   name: 'platform',
-  message: formatAsMainText("Which voice assistant(s) do you need to configure?"),
+  message: formatAsMainText("Which platform(s) would you like to configure for this project? (You can always add more later)"),
   type: 'checkbox',
-  prefix: "-",
+  prefix: "",
   choices: [
     'Google (Dialogflow)',
     'Alexa'

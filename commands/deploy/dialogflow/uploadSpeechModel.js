@@ -2,21 +2,24 @@ var rp = require('request-promise')
 var dialogflowBaseURI = "https://api.dialogflow.com/v1"
 var emptyIntentBody = require('./basicIntent')
 var emptyEntityBody = require('./basicEntity')
-
+var prompts = require('../../prompts')
+var errorReported = false;
 var Ayva = require('../../ayvaConfigProvider')
+
+
 
 var uploadSpeechModelToDialogflow = function(ayvaConfig){
     getEntityModel(ayvaConfig.config).then( remoteEntityModel =>{
         ayvaConfig.speechModel.entities.map(entityConfig => {
             syncEntityWithDialogflow(ayvaConfig, entityConfig, remoteEntityModel)
         })
-    })
+    }).catch(e => {return notConfiguredError(e)})
 
     getIntentModel(ayvaConfig.config).then( remoteIntentModel => {
         ayvaConfig.speechModel.intents.map( intentConfig => {
             syncIntentWithDialogflow(ayvaConfig, intentConfig, remoteIntentModel)
         })
-    })
+    }).catch(e => {return notConfiguredError(e)})
 
 }
 
@@ -31,13 +34,14 @@ var getEntityModel = function(ayvaConfig){
         };
     
         rp(options)
-            .then(function(res){
+            .then(res => {
                 res = JSON.parse(res)
                 var model = {}
-                res.map((slot) => {
-                    model[slot.name] = slot.id
-                })
+                res.map(slot => { model[slot.name] = slot.id})
                 resolve(model);
+            })
+            .catch(e => {
+                reject(e.error)
             })
     })
 }
@@ -60,6 +64,9 @@ var getIntentModel = function(ayvaConfig){
                     model[intent.name] = intent.id
                 })
                 resolve(model);
+            })
+            .catch(e => {
+                reject(e.error)
             })
     })
 }
@@ -96,11 +103,11 @@ var syncEntityWithDialogflow = function(ayvaConfig, entityConfig, remoteEntityMo
 
     rp(options)
         .then(function (parsedBody) {
-            console.log(`Successfully deployed entity ${entityBody.name} to Google`)
+            console.log(prompts.formatAsMainText(`Successfully deployed entity ${entityBody.name} to Google`))
         })
         .catch(function (err) {
-            console.log(`Intent ${entityBody.name} failed to upload to Dialogflow`)
-            console.log(err.error)
+            console.log(prompts.formatAsError(`Intent ${entityBody.name} failed to upload to Dialogflow`))
+            console.log(prompts.formatAsError(err.error))
         });
 }
 
@@ -171,6 +178,13 @@ var formatUtterance = function(utterance, requestFormat, slots){
         slotBegin = slotEnd+1
     }
     formatUtterance(utterance.substring(slotBegin), requestFormat, slots)
+}
+
+var notConfiguredError = function(e){
+    if(!errorReported){
+        errorReported = true;
+        console.log(prompts.formatAsError("Ayva was unable to process the request. Make sure you have configured your dialoflow credentials using ayva init"))
+    }
 }
 
 module.exports = uploadSpeechModelToDialogflow
