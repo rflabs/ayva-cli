@@ -34,7 +34,7 @@ var walkthrough = function(installPath) {
         
         console.log('Cloning repo from git...')
         exec(cloneHelloWorld, "", function(err, data){
-            if(err) return console.log("Hello failed: Folder already exists at the specified path. Try deleting or specifying another path")
+            if(err) return console.log(chalk.red("Hello failed: Folder already exists at the specified path. Try deleting or specifying another path"))
             init(installPath)
         })
     })
