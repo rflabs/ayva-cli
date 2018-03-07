@@ -1,4 +1,5 @@
 var fs = require('fs'),
+    prompt = require('../../../prompts'),
     exec = require('child-process-promise').exec
 
                     /*  ask api update-model
@@ -19,11 +20,17 @@ var updateModel = function(ayvaConfig){
             else {
                 fs.unlink('./en-US.json', function(data,err){
                     if(!err)
-                        console.log("Successfully deployed Ayva Speech Model to Alexa")
+                        ayvaConfig.speechModel.intents.map(intent => {
+                            console.log(prompt.formatAsMainText(`Successfully deployed intent to Alexa: ${intent.name}`))
+                        })
+                        ayvaConfig.speechModel.entities.map(entity => {
+                            console.log(prompt.formatAsMainText(`Successfully deployed entity to Alexa: ${entity.name}`))
+                        })
                 })
             }
         })
-        .catch((err) => { 
+        .catch((err) => {
+            console.log(prompt.formatAsError(`\nThere was a problem deploying to Alexa\n--------------------------------------`))
             console.log(err.stderr);
             fs.unlink('./en-US.json', function(data,err){
                 return
