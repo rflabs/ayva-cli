@@ -1,7 +1,7 @@
 var chalk = require('chalk')
 
 var formatAsMainText = function(text){
-  return chalk.rgb(200,200,90)(text)
+  return chalk.rgb(0, 205, 175)(text)
 }
 
 var formatAsError = function(text){

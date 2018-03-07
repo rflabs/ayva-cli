@@ -3,7 +3,8 @@ var updateSpeechModelDF = require("./dialogflow/uploadSpeechModel"),
     Ayva = require('../ayvaConfigProvider'),
     prompts = require('../prompts'),
     clear = require('clear'),
-    figlet = require('figlet')
+    figlet = require('figlet'),
+    chalk = require('chalk')
 
 var updateSpeechModels = function(path, cmd){
     clear();
@@ -18,7 +19,7 @@ var updateSpeechModels = function(path, cmd){
             console.log(err);
             return;
         }
-        console.log(prompts.formatAsMainText(ascii));
+        console.log(chalk.rgb(200,200,90)(ascii));
         console.log("\n")
         if(!Ayva.existsAt(path))
             return console.log(prompts.formatAsError("This does not seem to be an Ayva project, try running ayva init or ayva create first"));

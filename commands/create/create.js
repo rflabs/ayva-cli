@@ -25,7 +25,7 @@ var walkthrough = function(installPath) {
             console.log(prompts.formatAsError(err));
             return;
         }
-        console.log(prompts.formatAsMainText(ascii));
+        console.log(chalk.rgb(200,200,90)(ascii));
         console.log("\n")
 
         if(!installPath) 

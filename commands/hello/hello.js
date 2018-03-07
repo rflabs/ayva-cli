@@ -8,7 +8,8 @@ p = require('path');
 
 // UX
 var clear = require('clear'),
-    figlet = require('figlet')
+    figlet = require('figlet'),
+    chalk = require('chalk')
 
 var walkthrough = function(installPath) {
     clear();
@@ -31,7 +32,7 @@ var walkthrough = function(installPath) {
 
         var cloneHelloWorld = `git clone --depth=1 https://github.com/rflabs/ayva-helloWorld.git ${installPath} && rm -rf ${installPath}/.git`; //Don't use original repo
         
-        console.log(prompts.formatAsMainText('Welcome to the Ayva developer framework! I\'ll start by setting up your project...'))
+        console.log(chalk.rgb(200,200,90)('Welcome to the Ayva developer framework! I\'ll start by setting up your project...'))
         exec(cloneHelloWorld, "", function(err, data){
             if(err) return console.log(prompts.formatAsError("ayva hello failed: A folder already exists at the specified path. Try deleting it or specifying another path"))
             init(installPath)
