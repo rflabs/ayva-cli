@@ -106,8 +106,8 @@ var syncEntityWithDialogflow = function(ayvaConfig, entityConfig, remoteEntityMo
             console.log(prompts.formatAsMainText(`Successfully deployed entity to Google: ${entityBody.name}`))
         })
         .catch(function (err) {
-            console.log(prompts.formatAsError(`Intent ${entityBody.name} failed to upload to Dialogflow`))
-            console.log(prompts.formatAsError(err.error))
+            console.log(prompts.formatAsError(`Entity ${entityBody.name} failed to upload to Dialogflow`))
+            console.log(err.error)
         });
 }
 
@@ -136,7 +136,7 @@ var syncIntentWithDialogflow = function(ayvaConfig, intentConfig, remoteIntentMo
     }
 
     for (let s in intentConfig.slots) {
-        let slot = intentConfig.slos[s];
+        let slot = intentConfig.slots[s];
         intentConfig.slots[s] = {
             name: s,
             value: "$" + s,
@@ -161,14 +161,15 @@ var syncIntentWithDialogflow = function(ayvaConfig, intentConfig, remoteIntentMo
             console.log(prompts.formatAsMainText(`Successfully deployed intent to Google: ${intentBody.name} `))
         })
         .catch(function (err) {
-            console.log(`Intent ${intentBody.name} failed to upload to Dialogflow`)
+            console.log(prompts.formatAsError(`Intent ${intentBody.name} failed to upload to Dialogflow:`))
             console.log(err.error)
         });
 }
 
 var formatUtterance = function(utterance, requestFormat, slots){
     if(utterance.length == 0) 
-        return;
+
+    return;
 
     let slotBegin = utterance.indexOf("{");
     if(slotBegin == -1)
@@ -189,6 +190,7 @@ var formatUtterance = function(utterance, requestFormat, slots){
 var notConfiguredError = function(e){
     if(!errorReported){
         errorReported = true;
+        console.log(e)
         console.log(prompts.formatAsError("Ayva was unable to process the request. Make sure you have configured your dialoflow credentials using ayva init"))
     }
 }
