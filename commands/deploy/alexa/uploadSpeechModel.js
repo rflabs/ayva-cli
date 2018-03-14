@@ -9,7 +9,7 @@ var Ayva = require('../../ayvaConfigProvider')
 var uploadSpeechModelToAlexa = function(ayvaConfig){
     writeAlexaModelToFile(ayvaConfig.config, ayvaConfig.speechModel)
         .then((res) => askUpdateModel(ayvaConfig))
-        .catch((err) => console.log(`Error writing Alexa speech model: ${err}`))
+        .catch((err) => {console.log(`Error writing Alexa speech model`); console.log(err)})
 }
 
 var writeAlexaModelToFile = function(ayvaConfig, ayvaSpeechModel){
@@ -49,6 +49,7 @@ var addSlotsToModel = function(slots, alexaFormattedIntent){
 }
 
 var addSayingsToModel = function(phrases, alexaFormattedIntent){
+    if(!phrases) return;
     phrases.map((phrase) => {
         phrase = phrase.replace(/'/g, '"')
         alexaFormattedIntent.samples.push(formatAsSaying(phrase))
