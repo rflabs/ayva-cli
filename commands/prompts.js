@@ -55,9 +55,9 @@ var nameYourProjectPrompt = {
 
 var choosePlatform = {
   name: 'platform',
-  message: formatAsMainText("Which platform(s) would you like to configure for this project? (You can always add more later)"),
+  message: formatAsMainText("Which platform(s) would you like to configure for this project"),
   type: 'checkbox',
-  prefix: "",
+  prefix: "\n",
   choices: [
     'Google (Dialogflow)',
     'Alexa'
