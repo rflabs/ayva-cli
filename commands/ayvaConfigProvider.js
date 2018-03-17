@@ -17,6 +17,7 @@ var loadConfig = function(path){
 
         //Package up the intents and entities in the SpeechModel folder
         findFiles(p.join(path, ayvaConfig.config.pathToSpeechModel, "/Intents"), function(e, files){
+            if(e || !files) return resolve(ayvaConfig) //Return empty if new
             files.map(f => {
                 var intent = require(f)
                 valid(intent) && ayvaConfig.speechModel.intents.push(intent)

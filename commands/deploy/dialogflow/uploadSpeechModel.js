@@ -142,6 +142,7 @@ var syncIntentWithDialogflow = function(ayvaConfig, intentConfig, remoteIntentMo
         intentConfig.slots[s] = {
             name: s,
             value: "$" + s,
+            dataType: slot.dataType,
             required: slot.required,
             prompts: slot.prompts || []
         }
