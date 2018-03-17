@@ -40,7 +40,7 @@ var walkthrough = function(installPath) {
             let pathSplit = installPath.split(p.sep)
             ayvaConfig.invocationPhrase = pathSplit[pathSplit.length-1]
 
-            let cloneEmptyProject = `git clone --depth=1 https://github.com/rflabs/ayva-helloWorld.git ${installPath}`
+            let cloneEmptyProject = `git clone --depth=1 https://github.com/rflabs/ayva-empty.git ${installPath}`
 
             exec(cloneEmptyProject, "", function(err, data){
                 if(err) return console.log(prompts.formatAsError("Create failed: Folder already exists at the specified path. Try deleting or specifying another path"))

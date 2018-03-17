@@ -3,7 +3,8 @@ var p = require('path'),
     Empty = require('./empty.ayva.json'),
     scriptPath = p.join(process.env.PWD || process.cwd()),
     findFiles = require('recursive-readdir')
-    
+
+//Currently returns empty if there is an error. Should consider refactor
 var loadConfig = function(path){
     return new Promise( (resolve, reject) => {
         path = getWorkingPath(path)
