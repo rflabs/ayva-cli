@@ -20,7 +20,8 @@
     "prompt-checkbox": "^2.2.0",
     "recursive-readdir": "^2.2.2",
     "request": "^2.83.0",
-    "request-promise": "^4.2.2"
+    "request-promise": "^4.2.2",
+    "rimraf": "^2.6.2"
   },
   "bin": {
     "ayva": "./index.js"
