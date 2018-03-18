@@ -31,9 +31,15 @@ var init = function(ayvaConfigPath){
     
     Ayva.loadConfig(ayvaConfigPath).then(c => {
         let ayvaConfig = c.config;
-        if(!fs.existsSync(p.join(ayvaConfigPath|| "", ayvaConfig.pathToSpeechModel)))
-        fs.writeFileSync(p.join(ayvaConfigPath|| "", ayvaConfig.pathToSpeechModel), "")
 
+        if(!fs.existsSync(p.join(ayvaConfigPath|| "", ayvaConfig.pathToSpeechModel))){
+            fs.mkdirSync(p.join(ayvaConfigPath|| "", ayvaConfig.pathToSpeechModel))
+            fs.mkdirSync(p.join(ayvaConfigPath || "", ayvaConfig.pathToSpeechModel,"/Intents"))
+        }
+        //This takes care of the empty Entity folder issue in git
+        if(!fs.existsSync(p.join(ayvaConfigPath || "", ayvaConfig.pathToSpeechModel,"/Entities")))
+            fs.mkdirSync(p.join(ayvaConfigPath || "", ayvaConfig.pathToSpeechModel,"/Entities"))
+        
         inquirer.prompt(prompts.choosePlatform)
         .then(function(answer) {
             console.log("\n")

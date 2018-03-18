@@ -1,6 +1,6 @@
 {
     "invocationPhrase": null,
-    "pathToSpeechModel": "./speechModel.js",
+    "pathToSpeechModel": "./InteractionModel",
     "dialogflow": {
         "clientId": null,
         "developerAccessToken": null

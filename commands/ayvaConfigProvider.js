@@ -24,6 +24,7 @@ var loadConfig = function(path){
                 valid(intent) && ayvaConfig.speechModel.intents.push(intent)
             })
             findFiles(p.join(path, ayvaConfig.config.pathToSpeechModel, "/Entities"), function(e, files){
+                if(e || !files) return resolve(ayvaConfig)
                 files.map(f => {
                     var entity = require(f);
                     valid(entity) && ayvaConfig.speechModel.entities.push(entity);
