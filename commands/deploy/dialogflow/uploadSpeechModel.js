@@ -113,6 +113,13 @@ var syncEntityWithDialogflow = function(ayvaConfig, entityConfig, remoteEntityMo
         });
 }
 
+var getType = function(slot){
+    if(slot.dataType[0] == "@")
+        return slot.dataType
+    else
+        return "@"+slot.dataType
+}
+
 var syncIntentWithDialogflow = function(ayvaConfig, intentConfig, remoteIntentModel){
     var method = "POST"
     var dialogflowURI = dialogflowBaseURI + "/intents/";
@@ -142,7 +149,7 @@ var syncIntentWithDialogflow = function(ayvaConfig, intentConfig, remoteIntentMo
         intentConfig.slots[s] = {
             name: s,
             value: "$" + s,
-            dataType: slot.dataType,
+            dataType: getType(slot),
             required: slot.required,
             prompts: slot.prompts || []
         }
@@ -186,7 +193,7 @@ var formatUtterance = function(utterance, requestFormat, slots){
         var slotEnd = utterance.indexOf('}');
         var slotFromUtterance = JSON.parse(utterance.substring(0, slotEnd+1))
         var slotName = Object.keys(slotFromUtterance)[0]
-        requestFormat.push({"alias": slotName, "text": slotFromUtterance[slotName], "userDefined": false, "meta": slots[slotName].dataType})
+        requestFormat.push({"alias": slotName, "text": slotFromUtterance[slotName], "userDefined": true, "meta": getType(slots[slotName])})
         slotBegin = slotEnd+1
     }
     formatUtterance(utterance.substring(slotBegin), requestFormat, slots)
