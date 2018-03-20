@@ -15,7 +15,6 @@ var loadConfig = function(path){
         }catch (e) {
             ayvaConfig.config = Ayva.Empty
         }
-
         //Package up the intents and entities in the SpeechModel folder
         findFiles(p.join(path, ayvaConfig.config.pathToSpeechModel, "/Intents"), function(e, files){
             if(e || !files) return resolve(ayvaConfig) //Return empty if new
@@ -33,6 +32,23 @@ var loadConfig = function(path){
             })
         })
     })
+}
+
+var dataTypeForPlatform = function(dataTypes, platform){
+    var typeForPlatform = dataTypes.map(dT => {
+        var df = dT.match("@sys.")
+        var alexa = dT.match("AMAZON.")
+
+        if(df && df.index==0) return dT //Hit for dialogflow
+        else if(alexa && alexa.index==0) return dT //Hit for alexa
+        else return dT; //Hit custom
+    })
+
+    if(!dataType || dataType.length == 0 || dataType.length > 2)
+        throw Error("InvalidSlotType")
+    else
+        return typeForPlatform[0]
+
 }
 
 var existsAt = function(path){
@@ -71,6 +87,6 @@ var valid = function(item){
 }
 
 
-var Ayva = {loadConfig, existsAt, saveConfig, Empty, hasAlexaConfiguration, hasDialogflowConfiguration}
+var Ayva = {loadConfig, existsAt, saveConfig, Empty, hasAlexaConfiguration, hasDialogflowConfiguration, dataTypeForPlatform}
 
 module.exports = Ayva;

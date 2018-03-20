@@ -113,8 +113,8 @@ var syncEntityWithDialogflow = function(ayvaConfig, entityConfig, remoteEntityMo
         });
 }
 
-var getType = function(slot){
-    if(slot.dataType[0] == "@")
+var formatDataTypeForDialogflow = function(dataType){
+    if(dataType[0] == "@")
         return slot.dataType
     else
         return "@"+slot.dataType
@@ -134,27 +134,35 @@ var syncIntentWithDialogflow = function(ayvaConfig, intentConfig, remoteIntentMo
         dialogflowURI += intentBody.id
     }
 
-    for (var u in intentConfig.utterances){
-        intentBody.userSays.unshift({"data": []})
-        var utterance = intentConfig.utterances[u].replace(/'/g, '"')
-        formatUtterance(utterance, intentBody.userSays[0].data, intentConfig.slots)
-    }
-
     for (let i in intentConfig.events) {
         intentBody.events.push({"name":intentConfig.events[i]})
     }
 
     for (let s in intentConfig.slots) {
         let slot = intentConfig.slots[s];
+
+        try{
+            let dataType = Ayva.dataTypeForPlatform(slot.dataType, "dialogflow")
+        }
+        catch(err){
+            throw Error(`Invalid dataType for ${s} slot in ${intentConfig.name} intent `)
+        }
+
         intentConfig.slots[s] = {
             name: s,
             value: "$" + s,
-            dataType: getType(slot),
+            dataType: formatDataTypeForDialogflow(dataType),
             required: slot.required,
             prompts: slot.prompts || []
         }
 
         intentBody.responses[0].parameters.push(intentConfig.slots[s])
+    }
+
+    for (var u in intentConfig.utterances){
+        intentBody.userSays.unshift({"data": []})
+        var utterance = intentConfig.utterances[u].replace(/'/g, '"')
+        formatUtterance(utterance, intentBody.userSays[0].data, intentConfig.slots)
     }
     
     var options = {
@@ -193,7 +201,7 @@ var formatUtterance = function(utterance, requestFormat, slots){
         var slotEnd = utterance.indexOf('}');
         var slotFromUtterance = JSON.parse(utterance.substring(0, slotEnd+1))
         var slotName = Object.keys(slotFromUtterance)[0]
-        requestFormat.push({"alias": slotName, "text": slotFromUtterance[slotName], "userDefined": true, "meta": getType(slots[slotName])})
+        requestFormat.push({"alias": slotName, "text": slotFromUtterance[slotName], "userDefined": true, "meta": slots[slotName].dataType})
         slotBegin = slotEnd+1
     }
     formatUtterance(utterance.substring(slotBegin), requestFormat, slots)
