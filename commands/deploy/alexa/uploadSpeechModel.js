@@ -44,7 +44,7 @@ var writeAlexaModelToFile = function(ayvaConfig, ayvaSpeechModel){
 var addSlotsToModel = function(slots, alexaFormattedIntent){
     if(!slots) return;
     Object.keys(slots).map((slotName) => {
-        alexaFormattedIntent.slots.push({"name":slotName,"type":slots[slotName].dataType_alexa})
+        alexaFormattedIntent.slots.push({"name":slotName,"type":Ayva.dataTypeForPlatform(slots[slotName].dataType,"alexa")})
     })
 }
 

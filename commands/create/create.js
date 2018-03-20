@@ -38,7 +38,7 @@ var walkthrough = function(installPath) {
         Ayva.loadConfig(installPath).then(c => {
             let ayvaConfig = c.config;
             let pathSplit = installPath.split(p.sep)
-            ayvaConfig.invocationPhrase = pathSplit[pathSplit.length-1]
+            ayvaConfig.invocationPhrase = (pathSplit[pathSplit.length-1]).toLowerCase()
 
             let cloneEmptyProject = `git clone --depth=1 https://github.com/rflabs/ayva-empty.git ${installPath}`
 
