@@ -35,17 +35,26 @@ var loadConfig = function(path){
 }
 
 var dataTypeForPlatform = function(dataTypes, platform){
-    var typeForPlatform = dataTypes.map(dT => {
+
+    //Remove dataType entries for all platforms that are not this platform
+    //Otherwise assume custom
+    var typeForPlatform = dataTypes.filter(dT => {
         var df = dT.match("@sys.")
         var alexa = dT.match("AMAZON.")
 
-        if(df && df.index==0) return dT //Hit for dialogflow
-        else if(alexa && alexa.index==0) return dT //Hit for alexa
-        else return dT; //Hit custom
+        if(df && df.index==0) //Hit for dialogflow type
+            if(platform != "dialogflow")
+                return false;
+        if(alexa && alexa.index==0) //Hit for alexa type
+            if(platform != "alexa")
+                return false    
+        return true;
     })
 
-    if(!dataType || dataType.length == 0 || dataType.length > 2)
-        throw Error("InvalidSlotType")
+    if(!typeForPlatform || typeForPlatform.length == 0)
+        throw Error("No valid type found")
+    else if ( typeForPlatform.length > 1)
+        throw Error("Slot type matched multiple platforms")
     else
         return typeForPlatform[0]
 

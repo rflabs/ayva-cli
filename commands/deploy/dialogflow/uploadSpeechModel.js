@@ -115,9 +115,9 @@ var syncEntityWithDialogflow = function(ayvaConfig, entityConfig, remoteEntityMo
 
 var formatDataTypeForDialogflow = function(dataType){
     if(dataType[0] == "@")
-        return slot.dataType
+        return dataType
     else
-        return "@"+slot.dataType
+        return "@"+dataType
 }
 
 var syncIntentWithDialogflow = function(ayvaConfig, intentConfig, remoteIntentModel){
@@ -142,10 +142,14 @@ var syncIntentWithDialogflow = function(ayvaConfig, intentConfig, remoteIntentMo
         let slot = intentConfig.slots[s];
 
         try{
-            let dataType = Ayva.dataTypeForPlatform(slot.dataType, "dialogflow")
+            var dataType = Ayva.dataTypeForPlatform(slot.dataType, "dialogflow")
         }
         catch(err){
-            throw Error(`Invalid dataType for ${s} slot in ${intentConfig.name} intent `)
+            console.log()
+            console.log(prompts.formatAsError(`Intent ${intentBody.name} failed to upload to Dialogflow:`))
+            console.log(`Invalid dataType for slot ${s} in intent ${intentConfig.name}`)
+            console.log()
+            return;
         }
 
         intentConfig.slots[s] = {
