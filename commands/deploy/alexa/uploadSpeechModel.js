@@ -2,6 +2,7 @@ var path = require('path')
 var getAlexaLanguageModel = require('./alexaLanguageModel')
 var askUpdateModel = require('./ask-commands/updateModel')
 var jsonFile = require('jsonfile')
+var prompts = require('../../prompts')
 var _ = require('lodash')
 
 var Ayva = require('../../ayvaConfigProvider')
@@ -9,7 +10,7 @@ var Ayva = require('../../ayvaConfigProvider')
 var uploadSpeechModelToAlexa = function(ayvaConfig){
     writeAlexaModelToFile(ayvaConfig.config, ayvaConfig.speechModel)
         .then((res) => askUpdateModel(ayvaConfig))
-        .catch((err) => {console.log(`Error writing Alexa speech model`); console.log(err)})
+        .catch((err) => {console.log(prompts.formatAsError(`Error writing Alexa speech model:`)); console.log(err)})
 }
 
 var writeAlexaModelToFile = function(ayvaConfig, ayvaSpeechModel){

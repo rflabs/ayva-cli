@@ -3,7 +3,8 @@ var Ayva = require('../ayvaConfigProvider');
 var exec = require('child_process').exec,
 prompts = require('../prompts'),
 inquirer = require('inquirer'),
-init = require('../init/init')
+rimraf = require('rimraf'),
+init = require('../init/init'),
 p = require('path');
 
 // UX
@@ -30,12 +31,15 @@ var walkthrough = function(installPath) {
         var config = Ayva.Empty;
         installPath = installPath || 'ayva-helloWorld'
 
-        var cloneHelloWorld = `git clone --depth=1 https://github.com/rflabs/ayva-helloWorld.git ${installPath} && rm -rf ${installPath}/.git`; //Don't use original repo
-        
+        let cloneHelloWorld = `git clone --depth=1 https://github.com/rflabs/ayva-helloWorld.git ${installPath}`
         console.log('Welcome to the Ayva developer framework! I\'ll start by setting up your project...\n')
         exec(cloneHelloWorld, "", function(err, data){
             if(err) return console.log(prompts.formatAsError("ayva hello failed: A folder already exists at the specified path. Try deleting it or specifying another path"))
-            init(installPath)
+
+            rimraf(p.join(installPath, '/.git'), function(err){
+                if(err) return console.log(err);
+                init(installPath)
+            })
         })
     })
 }
