@@ -52,7 +52,6 @@ var addSlotsToModel = function(slots, alexaFormattedIntent){
 var addSayingsToModel = function(phrases, alexaFormattedIntent){
     if(!phrases) return;
     phrases.map((phrase) => {
-        phrase = phrase.replace(/'/g, '"')
         alexaFormattedIntent.samples.push(formatAsSaying(phrase))
     })
 }
@@ -68,7 +67,8 @@ var formatAsSaying = function(unformattedPhrase, formattedPhrase = ""){
         return formatAsSaying(unformattedPhrase.substring(slotBegin), formattedPhrase)
     } else {
         var slotEnd = unformattedPhrase.indexOf('}');
-        var slotFromUtterance = JSON.parse(unformattedPhrase.substring(0, slotEnd+1))
+        var unformattedPhraseWithApostropheSwap = unformattedPhrase.replace(/'/g, '"')
+        var slotFromUtterance = JSON.parse(unformattedPhraseWithApostropheSwap.substring(0, slotEnd+1))
         var slotName = Object.keys(slotFromUtterance)[0]
         formattedPhrase += '{' + slotName + '}'
         return formatAsSaying(unformattedPhrase.substring(slotEnd+1), formattedPhrase)
