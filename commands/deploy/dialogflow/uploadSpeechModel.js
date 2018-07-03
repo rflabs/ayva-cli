@@ -162,10 +162,9 @@ var syncIntentWithDialogflow = function(ayvaConfig, intentConfig, remoteIntentMo
 
         intentBody.responses[0].parameters.push(intentConfig.slots[s])
     }
-
     for (var u in intentConfig.utterances){
         intentBody.userSays.unshift({"data": []})
-        var utterance = intentConfig.utterances[u].replace(/'/g, '"')
+        var utterance = intentConfig.utterances[u]
         formatUtterance(utterance, intentBody.userSays[0].data, intentConfig.slots)
     }
     
@@ -203,7 +202,8 @@ var formatUtterance = function(utterance, requestFormat, slots){
         requestFormat.push({"text": utterance.substring(0, slotBegin)});
     } else {
         var slotEnd = utterance.indexOf('}');
-        var slotFromUtterance = JSON.parse(utterance.substring(0, slotEnd+1))
+        var utternaceWithApostropheSwap = utterance.replace(/'/g, '"')
+        var slotFromUtterance = JSON.parse(utternaceWithApostropheSwap.substring(0, slotEnd+1))
         var slotName = Object.keys(slotFromUtterance)[0]
         requestFormat.push({"alias": slotName, "text": slotFromUtterance[slotName], "userDefined": true, "meta": slots[slotName].dataType})
         slotBegin = slotEnd+1
